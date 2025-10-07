@@ -25,32 +25,32 @@
     }
 
     h1 {
-      font-size: 5em;
+      font-size: 4em;
       font-weight: normal;
-      margin-bottom: 0.05em;
+      margin: 0;
       color: #999;
       text-align: center;
       letter-spacing: 0.05em;
     }
 
     h2 {
-      font-size: 1.3em;
+      font-size: 1.1em;
       font-weight: normal;
       text-align: center;
-      margin-bottom: 1.2em;
+      margin: 0.3em 0 0.8em;
       color: #666;
     }
 
     .section {
-      margin: 1.5em 0;
-      padding: 1em;
+      margin: 0.8em 0;
+      padding: 0.6em 0.8em;
       border-left: 2px solid #ddd;
     }
 
     .section-title {
-      font-size: 1em;
+      font-size: 0.95em;
       font-weight: bold;
-      margin-bottom: 0.6em;
+      margin-bottom: 0.4em;
       color: #555;
     }
 
@@ -60,7 +60,7 @@
     }
 
     li {
-      margin: 0.6em 0;
+      margin: 0.3em 0;
       padding-left: 1.5em;
       position: relative;
     }
@@ -75,11 +75,11 @@
     .quote {
       font-style: italic;
       color: #666;
-      margin: 1.5em 0;
-      padding: 0.8em 1em;
+      margin: 0.8em 0;
+      padding: 0.6em 0.8em;
       background: #f9f9f9;
       border-left: 3px solid #ccc;
-      font-size: 0.95em;
+      font-size: 0.9em;
     }
 
     a {
@@ -104,34 +104,52 @@
 
     .footer {
       text-align: center;
-      margin-top: 1.5em;
-      padding-top: 1em;
+      margin-top: 0.8em;
+      padding-top: 0.6em;
       border-top: 1px solid #eee;
       color: #888;
-      font-size: 0.9em;
+      font-size: 0.85em;
     }
 
-    .gif-container {
-      text-align: center;
-      margin: 1.2em 0;
+    .gif-left, .gif-right {
+      float: left;
+      width: 140px;
+      height: 100px;
+      object-fit: cover;
+      border: 1px solid #e0e0e0;
+      margin-right: 15px;
+      margin-bottom: 10px;
     }
 
-    .gif-container img {
-      max-width: 100%;
-      max-height: 200px;
+    .gif-right {
+      float: right;
+      margin-right: 0;
+      margin-left: 15px;
+    }
+
+    .gif-center {
+      display: block;
+      max-width: 200px;
+      max-height: 120px;
       height: auto;
+      margin: 0.8em auto;
       border: 1px solid #e0e0e0;
     }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 3.5em;
+        font-size: 2.8em;
       }
       .section {
-        padding: 0.8em;
+        padding: 0.5em;
       }
-      .gif-container img {
-        max-height: 150px;
+      .gif-left, .gif-right {
+        width: 100px;
+        height: 75px;
+      }
+      .gif-center {
+        max-width: 150px;
+        max-height: 90px;
       }
     }
   </style>
@@ -140,30 +158,26 @@
   <h1>404</h1>
   <h2>恭喜你發現了一個不存在的頁面</h2>
 
+  <img id="gif1" class="gif-left" alt="">
+
   <div class="section">
     <div class="section-title">你要找的 <code id="url"></code> 可能：</div>
-    <ul>
-      <li>還在我的待辦清單裡</li>
-      <li>被海浪沖走了（討海漁家之子的無奈）</li>
-      <li>正在 ECMO 上搶救中</li>
-      <li>被發射到外太空找系外行星了</li>
-      <li>在半工半讀的某個深夜被遺忘了</li>
-    </ul>
+    <p style="line-height: 1.6;">還在我的待辦清單裡、正在 ECMO 上搶救中、被發射到外太空找系外行星了、或是在半工半讀的某個深夜被遺忘了。</p>
   </div>
+
+  <img id="gif2" class="gif-right" alt="">
 
   <div class="quote">
     「讀醫讀電資又讀戲劇，技能樹亂點的人生。」<br>
     <small>— 包括把網頁連結也點亂了</small>
   </div>
 
-  <div class="gif-container">
-    <img id="gif" alt="404">
-  </div>
-
   <div class="section">
     <div class="section-title">隨機冷知識</div>
-    <p id="fact" style="line-height: 1.8;"></p>
+    <p id="fact" style="line-height: 1.6;"></p>
   </div>
+
+  <img id="gif3" class="gif-center" alt="">
 
   <div class="footer">
     不如回到 <a href="/">首頁</a> 看看有什麼有趣的？
@@ -180,7 +194,8 @@
       '生活智慧：一天工作十四、十五小時的人，最需要的是咖啡和除錯。',
       '醫學常識：BZD 類藥物不能突然停藥，程式也不能突然停止維護。',
       '哲學思考：404 錯誤提醒我們，不是所有東西都能被找到，有些路本來就不存在。',
-      '實用建議：看到 404 不要慌，深呼吸，回首頁，人生就是這樣。'
+      '實用建議：看到 404 不要慌，深呼吸，回首頁，人生就是這樣。',
+      '冷知識：你知道嗎，其實斯拉夫人不是全部都是夫人，他們也有男生。'
     ];
     document.getElementById('fact').textContent = facts[Math.floor(Math.random() * facts.length)];
 
@@ -189,7 +204,12 @@
       'https://media1.tenor.com/m/WAFH6TX2VIYAAAAC/polish-cow.gif',
       'https://media1.tenor.com/m/OjZdgUxdGAgAAAAC/%E9%9D%99%E8%8A%B3-%E8%80%81%E5%A9%86.gif'
     ];
-    document.getElementById('gif').src = gifs[Math.floor(Math.random() * gifs.length)];
+
+    // 隨機分配三個 GIF 到三個位置
+    const shuffled = gifs.sort(() => Math.random() - 0.5);
+    document.getElementById('gif1').src = shuffled[0];
+    document.getElementById('gif2').src = shuffled[1];
+    document.getElementById('gif3').src = shuffled[2];
   </script>
 </body>
 </html>
