@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
+  <title>404 - 你迷路了嗎？</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font: 15px/22px Georgia, "Noto Serif TC", serif;
+      background: #fff;
+      color: #222;
+      padding: 15px;
+    }
+
+    body {
+      max-width: 600px;
+      margin: 10% auto 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 6em;
+      font-weight: normal;
+      margin-bottom: 0.2em;
+      color: #666;
+    }
+
+    p {
+      margin: 1em 0;
+      font-size: 1.2em;
+      line-height: 1.6;
+    }
+
+    .quote {
+      font-style: italic;
+      color: #666;
+      margin: 2em 0;
+      padding: 1em;
+      border-left: 3px solid #ddd;
+      text-align: left;
+    }
+
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: "Courier New", monospace;
+    }
+
+    .fun-fact {
+      margin-top: 3em;
+      padding: 1.5em;
+      background: #f9f9f9;
+      border-radius: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>404</h1>
+
+  <p><strong>恭喜你發現了一個不存在的頁面！</strong></p>
+
+  <p>你要找的 <code id="url"></code> 可能：</p>
+  <ul style="list-style: none; padding: 0;">
+    <li>📚 還在我的待辦清單裡</li>
+    <li>🌊 被海浪沖走了（討海漁家之子的無奈）</li>
+    <li>⚡ 正在 ECMO 上搶救中</li>
+    <li>🚀 被發射到外太空找系外行星了</li>
+    <li>💤 在半工半讀的某個深夜被遺忘了</li>
+  </ul>
+
+  <div class="quote">
+    「讀醫讀電資又讀戲劇，技能樹亂點的人生。」<br>
+    — 包括把網頁連結也點亂了
+  </div>
+
+  <p>不如回到 <a href="/">首頁</a> 看看有什麼有趣的？</p>
+
+  <div class="fun-fact">
+    <strong>🎲 隨機冷知識：</strong>
+    <p id="fact"></p>
+  </div>
+
+  <script>
+    // 顯示當前 URL
+    document.getElementById('url').textContent = window.location.pathname;
+
+    // 隨機冷知識
+    const facts = [
+      '你知道嗎？肺栓塞是僅次於心臟病和癌症的第三大死因。',
+      '有趣的事實：ECMO 可以部分或完全取代心肺功能，給器官恢復的時間。',
+      '冷知識：O-RAN 是開放無線接取網路的縮寫，正在改變電信產業。',
+      '學術八卦：寫程式寫到半夜突然發現 bug 的感覺，跟發現病人心律不整一樣刺激。',
+      '生活智慧：一天工作十四、十五小時的人，最需要的是咖啡和除錯。',
+      '醫學常識：BZD 類藥物不能突然停藥，程式也不能突然停止維護。',
+      '哲學思考：404 錯誤提醒我們，不是所有東西都能被找到，有些路本來就不存在。',
+      '實用建議：看到 404 不要慌，深呼吸，回首頁，人生就是這樣。'
+    ];
+    document.getElementById('fact').textContent = facts[Math.floor(Math.random() * facts.length)];
+  </script>
+</body>
+</html>
