@@ -11,96 +11,145 @@
     }
 
     html {
-      font: 15px/22px Georgia, "Noto Serif TC", serif;
+      font: 16px/1.6 Georgia, "Noto Serif TC", serif;
       background: #fff;
-      color: #222;
-      padding: 15px;
+      color: #333;
+      padding: 20px;
     }
 
     body {
-      max-width: 600px;
-      margin: 10% auto 0;
-      text-align: center;
+      max-width: 680px;
+      margin: 8% auto 0;
     }
 
     h1 {
-      font-size: 6em;
+      font-size: 8em;
       font-weight: normal;
-      margin-bottom: 0.2em;
+      margin-bottom: 0.1em;
+      color: #999;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      font-weight: normal;
+      text-align: center;
+      margin-bottom: 2em;
       color: #666;
     }
 
-    p {
-      margin: 1em 0;
-      font-size: 1.2em;
-      line-height: 1.6;
+    .section {
+      margin: 2.5em 0;
+      padding: 1.5em;
+      border-left: 2px solid #ddd;
+    }
+
+    .section-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin-bottom: 0.8em;
+      color: #555;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      margin: 0.6em 0;
+      padding-left: 1.5em;
+      position: relative;
+    }
+
+    li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #999;
     }
 
     .quote {
       font-style: italic;
       color: #666;
-      margin: 2em 0;
-      padding: 1em;
-      border-left: 3px solid #ddd;
-      text-align: left;
+      margin: 2.5em 0;
+      padding: 1.2em 1.5em;
+      background: #f9f9f9;
+      border-left: 3px solid #ccc;
     }
 
     a {
       color: #0066cc;
       text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom 0.2s;
     }
 
     a:hover {
-      text-decoration: underline;
+      border-bottom: 1px solid #0066cc;
     }
 
     code {
       background: #f5f5f5;
       padding: 2px 6px;
-      border-radius: 3px;
+      border: 1px solid #e0e0e0;
       font-family: "Courier New", monospace;
+      font-size: 0.9em;
+      color: #c7254e;
     }
 
-    .fun-fact {
+    .footer {
+      text-align: center;
       margin-top: 3em;
-      padding: 1.5em;
-      background: #f9f9f9;
-      border-radius: 8px;
-      text-align: left;
+      padding-top: 2em;
+      border-top: 1px solid #eee;
+      color: #888;
+      font-size: 0.95em;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 5em;
+      }
+      .section {
+        padding: 1em;
+      }
     }
   </style>
 </head>
 <body>
   <h1>404</h1>
+  <h2>恭喜你發現了一個不存在的頁面</h2>
 
-  <p><strong>恭喜你發現了一個不存在的頁面！</strong></p>
-
-  <p>你要找的 <code id="url"></code> 可能：</p>
-  <ul style="list-style: none; padding: 0;">
-    <li>📚 還在我的待辦清單裡</li>
-    <li>🌊 被海浪沖走了（討海漁家之子的無奈）</li>
-    <li>⚡ 正在 ECMO 上搶救中</li>
-    <li>🚀 被發射到外太空找系外行星了</li>
-    <li>💤 在半工半讀的某個深夜被遺忘了</li>
-  </ul>
+  <div class="section">
+    <div class="section-title">你要找的 <code id="url"></code> 可能：</div>
+    <ul>
+      <li>還在我的待辦清單裡</li>
+      <li>被海浪沖走了（討海漁家之子的無奈）</li>
+      <li>正在 ECMO 上搶救中</li>
+      <li>被發射到外太空找系外行星了</li>
+      <li>在半工半讀的某個深夜被遺忘了</li>
+    </ul>
+  </div>
 
   <div class="quote">
     「讀醫讀電資又讀戲劇，技能樹亂點的人生。」<br>
-    — 包括把網頁連結也點亂了
+    <small>— 包括把網頁連結也點亂了</small>
   </div>
 
-  <p>不如回到 <a href="/">首頁</a> 看看有什麼有趣的？</p>
+  <div class="section">
+    <div class="section-title">隨機冷知識</div>
+    <p id="fact" style="line-height: 1.8;"></p>
+  </div>
 
-  <div class="fun-fact">
-    <strong>🎲 隨機冷知識：</strong>
-    <p id="fact"></p>
+  <div class="footer">
+    不如回到 <a href="/">首頁</a> 看看有什麼有趣的？
   </div>
 
   <script>
-    // 顯示當前 URL
     document.getElementById('url').textContent = window.location.pathname;
 
-    // 隨機冷知識
     const facts = [
       '你知道嗎？肺栓塞是僅次於心臟病和癌症的第三大死因。',
       '有趣的事實：ECMO 可以部分或完全取代心肺功能，給器官恢復的時間。',
