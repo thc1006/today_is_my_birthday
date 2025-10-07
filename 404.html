@@ -11,44 +11,46 @@
     }
 
     html {
-      font: 16px/1.6 Georgia, "Noto Serif TC", serif;
+      font: 15px/1.5 Georgia, "Noto Serif TC", serif;
       background: #fff;
       color: #333;
-      padding: 20px;
+      padding: 15px;
+      height: 100vh;
+      overflow: auto;
     }
 
     body {
       max-width: 680px;
-      margin: 8% auto 0;
+      margin: 2% auto 0;
     }
 
     h1 {
-      font-size: 8em;
+      font-size: 5em;
       font-weight: normal;
-      margin-bottom: 0.1em;
+      margin-bottom: 0.05em;
       color: #999;
       text-align: center;
       letter-spacing: 0.05em;
     }
 
     h2 {
-      font-size: 1.5em;
+      font-size: 1.3em;
       font-weight: normal;
       text-align: center;
-      margin-bottom: 2em;
+      margin-bottom: 1.2em;
       color: #666;
     }
 
     .section {
-      margin: 2.5em 0;
-      padding: 1.5em;
+      margin: 1.5em 0;
+      padding: 1em;
       border-left: 2px solid #ddd;
     }
 
     .section-title {
-      font-size: 1.1em;
+      font-size: 1em;
       font-weight: bold;
-      margin-bottom: 0.8em;
+      margin-bottom: 0.6em;
       color: #555;
     }
 
@@ -73,10 +75,11 @@
     .quote {
       font-style: italic;
       color: #666;
-      margin: 2.5em 0;
-      padding: 1.2em 1.5em;
+      margin: 1.5em 0;
+      padding: 0.8em 1em;
       background: #f9f9f9;
       border-left: 3px solid #ccc;
+      font-size: 0.95em;
     }
 
     a {
@@ -101,19 +104,34 @@
 
     .footer {
       text-align: center;
-      margin-top: 3em;
-      padding-top: 2em;
+      margin-top: 1.5em;
+      padding-top: 1em;
       border-top: 1px solid #eee;
       color: #888;
-      font-size: 0.95em;
+      font-size: 0.9em;
+    }
+
+    .gif-container {
+      text-align: center;
+      margin: 1.2em 0;
+    }
+
+    .gif-container img {
+      max-width: 100%;
+      max-height: 200px;
+      height: auto;
+      border: 1px solid #e0e0e0;
     }
 
     @media (max-width: 600px) {
       h1 {
-        font-size: 5em;
+        font-size: 3.5em;
       }
       .section {
-        padding: 1em;
+        padding: 0.8em;
+      }
+      .gif-container img {
+        max-height: 150px;
       }
     }
   </style>
@@ -138,8 +156,8 @@
     <small>— 包括把網頁連結也點亂了</small>
   </div>
 
-  <div style="text-align: center; margin: 2.5em 0;">
-    <img id="gif" style="max-width: 100%; height: auto; border: 1px solid #e0e0e0;" alt="404">
+  <div class="gif-container">
+    <img id="gif" alt="404">
   </div>
 
   <div class="section">
@@ -168,8 +186,8 @@
 
     const gifs = [
       'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeno5Z3hzdGQxeXQ1N3J6c2h4ZThqYzRrenVpeng1N2VlazdrY2k5ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3q2zVr6cu95nF6O4/giphy.gif',
-      'https://tenor.com/brzlu.gif',
-      'https://tenor.com/bScyQ.gif'
+      'https://media1.tenor.com/m/WAFH6TX2VIYAAAAC/polish-cow.gif',
+      'https://media1.tenor.com/m/OjZdgUxdGAgAAAAC/%E9%9D%99%E8%8A%B3-%E8%80%81%E5%A9%86.gif'
     ];
     document.getElementById('gif').src = gifs[Math.floor(Math.random() * gifs.length)];
   </script>
