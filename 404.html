@@ -138,6 +138,10 @@
     <small>— 包括把網頁連結也點亂了</small>
   </div>
 
+  <div style="text-align: center; margin: 2.5em 0;">
+    <img id="gif" style="max-width: 100%; height: auto; border: 1px solid #e0e0e0;" alt="404">
+  </div>
+
   <div class="section">
     <div class="section-title">隨機冷知識</div>
     <p id="fact" style="line-height: 1.8;"></p>
@@ -161,6 +165,13 @@
       '實用建議：看到 404 不要慌，深呼吸，回首頁，人生就是這樣。'
     ];
     document.getElementById('fact').textContent = facts[Math.floor(Math.random() * facts.length)];
+
+    const gifs = [
+      'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeno5Z3hzdGQxeXQ1N3J6c2h4ZThqYzRrenVpeng1N2VlazdrY2k5ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3q2zVr6cu95nF6O4/giphy.gif',
+      'https://tenor.com/brzlu.gif',
+      'https://tenor.com/bScyQ.gif'
+    ];
+    document.getElementById('gif').src = gifs[Math.floor(Math.random() * gifs.length)];
   </script>
 </body>
 </html>
