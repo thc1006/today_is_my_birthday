@@ -1,34 +1,22 @@
 use axum::{
+    Router,
     body::Body,
-    http::{header, Request, Response, StatusCode},
+    http::{Request, Response, StatusCode, header},
     middleware::{self, Next},
     response::IntoResponse,
-    Router,
 };
 use std::net::SocketAddr;
-use tower_http::{
-    compression::CompressionLayer,
-    services::ServeDir,
-};
+use tower_http::{compression::CompressionLayer, services::ServeDir};
 use tracing::info;
 
 /// Security headers middleware
-async fn security_headers(
-    request: Request<Body>,
-    next: Next,
-) -> Response<Body> {
+async fn security_headers(request: Request<Body>, next: Next) -> Response<Body> {
     let mut response = next.run(request).await;
     let headers = response.headers_mut();
 
     // Security headers
-    headers.insert(
-        header::X_CONTENT_TYPE_OPTIONS,
-        "nosniff".parse().unwrap(),
-    );
-    headers.insert(
-        header::X_FRAME_OPTIONS,
-        "SAMEORIGIN".parse().unwrap(),
-    );
+    headers.insert(header::X_CONTENT_TYPE_OPTIONS, "nosniff".parse().unwrap());
+    headers.insert(header::X_FRAME_OPTIONS, "SAMEORIGIN".parse().unwrap());
     headers.insert(
         header::HeaderName::from_static("referrer-policy"),
         "strict-origin-when-cross-origin".parse().unwrap(),
@@ -62,8 +50,7 @@ async fn main() {
     // Initialize tracing
     tracing_subscriber::fmt()
         .with_env_filter(
-            tracing_subscriber::EnvFilter::try_from_default_env()
-                .unwrap_or_else(|_| "info".into()),
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()),
         )
         .init();
 
