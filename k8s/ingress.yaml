@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: thc1006-web
+  namespace: thc1006-web
+  labels:
+    app.kubernetes.io/name: thc1006-web
+    app.kubernetes.io/component: frontend
+  annotations:
+    # Traefik (k3s default ingress controller)
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+spec:
+  ingressClassName: traefik
+  rules:
+    # Main domain
+    - host: thc1006.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thc1006-web
+                port:
+                  name: http
+

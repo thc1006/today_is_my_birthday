@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: thc1006-web
+  labels:
+    app.kubernetes.io/name: thc1006-web
+    app.kubernetes.io/component: frontend
