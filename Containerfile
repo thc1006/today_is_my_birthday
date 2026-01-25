@@ -20,8 +20,8 @@ RUN cargo build --release --locked && rm -rf src target/release/deps/thc1006*
 COPY src ./src
 COPY static ./static
 
-# Build the actual binary
-RUN cargo build --release
+# Build the actual binary (with --locked for reproducible builds)
+RUN cargo build --release --locked
 
 # Stage 2: Runtime image (minimal Alpine)
 FROM docker.io/library/alpine:3.21

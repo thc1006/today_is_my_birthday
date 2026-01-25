@@ -108,6 +108,12 @@ jobs:
         run: pnpm run build
       - name: Verify built file exists
         run: test -f static/common.js
+      - name: Verify built artifacts are committed
+        run: |
+          git diff --exit-code static/common.js || {
+            echo "::error::static/common.js is out of sync with ts/common.ts. Please run 'pnpm run build' and commit the changes."
+            exit 1
+          }
       - name: Validate HTML
         uses: Cyb3r-Jak3/html5validator-action@v7.2.0
         with:
