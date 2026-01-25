@@ -52,9 +52,9 @@ USER app
 # Expose port
 EXPOSE 8080
 
-# Health check
+# Health check (using BusyBox-compatible wget flags)
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
+    CMD wget -q -T 3 -O /dev/null http://localhost:8080/ || exit 1
 
 # Run the server
 CMD ["/app/thc1006-web"]

@@ -122,6 +122,8 @@ jobs:
 
   # ============================================
   # 容器構建驗證
+  # NOTE: CI uses Docker for convenience in GitHub Actions environment.
+  # Production deployment uses Podman + k3s (no Docker daemon required).
   # ============================================
   container-build:
     name: Container Build

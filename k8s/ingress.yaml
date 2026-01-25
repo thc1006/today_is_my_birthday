@@ -1,16 +1,24 @@
 # Ingress Configuration for thc1006.us
 #
-# Architecture: Cloudflare (TLS termination) -> k3s Traefik -> Service
+# Architecture: Cloudflare (TLS termination) -> k3s Traefik (HTTP) -> Service
 #
-# TLS is handled by Cloudflare Proxy:
-# - Cloudflare terminates HTTPS and forwards HTTP to origin
-# - Cloudflare SSL mode should be set to "Flexible" or "Full" in dashboard
-# - No TLS certificate needed at k3s level with this architecture
+# Current setup uses Cloudflare SSL "Flexible" mode:
+# - Cloudflare terminates HTTPS from clients
+# - Cloudflare forwards HTTP (unencrypted) to origin server
+# - No TLS certificate needed at k3s level
 #
-# To enable end-to-end encryption (Cloudflare "Full (Strict)" mode):
-# 1. Add cert-manager and create a Certificate resource
-# 2. Uncomment the spec.tls section below
-# 3. Change Cloudflare SSL mode to "Full (Strict)"
+# SECURITY NOTE: "Flexible" mode means traffic between Cloudflare and origin
+# is unencrypted. This is acceptable when:
+# - Origin server is on a trusted network (e.g., same datacenter)
+# - You trust the network path between Cloudflare and your server
+#
+# To enable end-to-end encryption (recommended for production):
+# 1. Install cert-manager: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+# 2. Create a ClusterIssuer for Let's Encrypt
+# 3. Uncomment the spec.tls section below
+# 4. Add annotation: cert-manager.io/cluster-issuer: "letsencrypt-prod"
+# 5. Change Cloudflare SSL mode to "Full (Strict)"
+# 6. Update entrypoints to include websecure: traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
