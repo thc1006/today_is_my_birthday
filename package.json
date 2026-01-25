@@ -1,0 +1,27 @@
+{
+  "name": "thc1006-web-frontend",
+  "version": "1.0.0",
+  "description": "Frontend TypeScript for thc1006.us",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "esbuild ts/common.ts --bundle --minify --outfile=static/common.js --target=es2020",
+    "watch": "esbuild ts/common.ts --bundle --outfile=static/common.js --target=es2020 --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint ts/",
+    "lint:fix": "eslint ts/ --fix",
+    "check": "pnpm run typecheck && pnpm run lint",
+    "ci": "pnpm run check && pnpm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0"
+  },
+  "packageManager": "pnpm@10.28.1",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,183 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+# Cancel in-progress runs for the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================
+  # 變更檢測（決定需要執行哪些檢查）
+  # ============================================
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      rust: ${{ steps.filter.outputs.rust }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      k8s: ${{ steps.filter.outputs.k8s }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            rust:
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'src/**'
+              - 'static/**'
+            frontend:
+              - 'ts/**'
+              - 'static/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.json'
+              - 'eslint.config.js'
+            k8s:
+              - 'k8s/**'
+
+  # ============================================
+  # Rust 檢查（合併以減少工具鏈設置開銷）
+  # ============================================
+  rust:
+    name: Rust Check
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.rust == 'true' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "rust-check"
+          cache-targets: true
+      - name: Format
+        run: cargo fmt --all --check
+      - name: Clippy
+        run: cargo clippy --all-targets --all-features -- -D warnings
+      - name: Test
+        run: cargo test --all-features
+      - name: Build
+        run: cargo build --release --locked
+
+  rust-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.rust == 'true' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: rustsec/audit-check@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  # ============================================
+  # TypeScript + HTML 驗證（合併以減少 Node.js 設置開銷）
+  # ============================================
+  frontend:
+    name: Frontend Check
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - name: Type Check
+        run: pnpm run typecheck
+      - name: Lint
+        run: pnpm run lint
+      - name: Build
+        run: pnpm run build
+      - name: Verify built file exists
+        run: test -f static/common.js
+      - name: Verify built artifacts are committed
+        run: |
+          git diff --exit-code static/common.js || {
+            echo "::error::static/common.js is out of sync with ts/common.ts. Please run 'pnpm run build' and commit the changes."
+            exit 1
+          }
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: static/
+          css: true
+
+  # ============================================
+  # 容器構建驗證
+  # NOTE: CI uses Docker for convenience in GitHub Actions environment.
+  # Production deployment uses Podman + k3s (no Docker daemon required).
+  # ============================================
+  container-build:
+    name: Container Build
+    runs-on: ubuntu-latest
+    needs: [changes, rust, frontend]
+    if: |
+      always() &&
+      (needs.rust.result == 'success' || needs.rust.result == 'skipped') &&
+      (needs.frontend.result == 'success' || needs.frontend.result == 'skipped') &&
+      (needs.changes.outputs.rust == 'true' || needs.changes.outputs.frontend == 'true' || github.event_name == 'push')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build container image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Containerfile
+          push: false
+          tags: thc1006-web:ci
+          load: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Test container starts
+        run: |
+          docker run -d --name test-container -p 8080:8080 thc1006-web:ci
+          sleep 3
+          curl -f http://localhost:8080/ || exit 1
+          docker stop test-container
+
+  # ============================================
+  # Kubernetes 配置驗證
+  # ============================================
+  k8s-validate:
+    name: K8s Validation
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.k8s == 'true' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: yokawasa/action-setup-kube-tools@v0.11.1
+        with:
+          kubeconform: '0.6.7'
+      - name: Validate K8s manifests
+        run: kubeconform -strict -summary k8s/*.yaml
+
+  # ============================================
+  # 依賴授權檢查
+  # ============================================
+  license-check:
+    name: License Check
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.rust == 'true' || github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2

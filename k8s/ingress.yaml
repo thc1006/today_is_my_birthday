@@ -1,0 +1,53 @@
+# Ingress Configuration for thc1006.us
+#
+# Architecture: Cloudflare (TLS termination) -> k3s Traefik (HTTP) -> Service
+#
+# Current setup uses Cloudflare SSL "Flexible" mode:
+# - Cloudflare terminates HTTPS from clients
+# - Cloudflare forwards HTTP (unencrypted) to origin server
+# - No TLS certificate needed at k3s level
+#
+# SECURITY NOTE: "Flexible" mode means traffic between Cloudflare and origin
+# is unencrypted. This is acceptable when:
+# - Origin server is on a trusted network (e.g., same datacenter)
+# - You trust the network path between Cloudflare and your server
+#
+# To enable end-to-end encryption (recommended for production):
+# 1. Install cert-manager: kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.0/cert-manager.yaml
+# 2. Create a ClusterIssuer for Let's Encrypt
+# 3. Uncomment the spec.tls section below
+# 4. Add annotation: cert-manager.io/cluster-issuer: "letsencrypt-prod"
+# 5. Change Cloudflare SSL mode to "Full (Strict)"
+# 6. Update entrypoints to include websecure: traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: thc1006-web
+  namespace: thc1006-web
+  labels:
+    app.kubernetes.io/name: thc1006-web
+    app.kubernetes.io/component: frontend
+  annotations:
+    # Traefik (k3s default ingress controller)
+    # Only use 'web' entrypoint since Cloudflare handles TLS
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: thc1006.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thc1006-web
+                port:
+                  name: http
+
+  # Uncomment below for end-to-end TLS (requires cert-manager):
+  # tls:
+  #   - hosts:
+  #       - thc1006.us
+  #     secretName: thc1006-us-tls

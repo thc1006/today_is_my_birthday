@@ -1,0 +1,20 @@
+[package]
+name = "thc1006-web"
+version = "1.0.0"
+edition = "2024"
+authors = ["Tsai Hsiu-Chi <hctsai@linux.com>"]
+description = "Static file server for thc1006.us"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["fs", "compression-gzip"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
