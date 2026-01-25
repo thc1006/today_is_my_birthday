@@ -16,9 +16,11 @@ static PERMISSIONS_POLICY: HeaderName = HeaderName::from_static("permissions-pol
 
 static NOSNIFF: HeaderValue = HeaderValue::from_static("nosniff");
 static SAMEORIGIN: HeaderValue = HeaderValue::from_static("SAMEORIGIN");
-static REFERRER_POLICY_VALUE: HeaderValue = HeaderValue::from_static("strict-origin-when-cross-origin");
+static REFERRER_POLICY_VALUE: HeaderValue =
+    HeaderValue::from_static("strict-origin-when-cross-origin");
 static XSS_PROTECTION_VALUE: HeaderValue = HeaderValue::from_static("1; mode=block");
-static PERMISSIONS_POLICY_VALUE: HeaderValue = HeaderValue::from_static("geolocation=(), microphone=(), camera=()");
+static PERMISSIONS_POLICY_VALUE: HeaderValue =
+    HeaderValue::from_static("geolocation=(), microphone=(), camera=()");
 
 /// Security headers middleware
 async fn security_headers(request: Request<Body>, next: Next) -> Response<Body> {
