@@ -1,3 +1,17 @@
+# Ingress Configuration for thc1006.us
+#
+# Architecture: Cloudflare (TLS termination) -> k3s Traefik -> Service
+#
+# TLS is handled by Cloudflare Proxy:
+# - Cloudflare terminates HTTPS and forwards HTTP to origin
+# - Cloudflare SSL mode should be set to "Flexible" or "Full" in dashboard
+# - No TLS certificate needed at k3s level with this architecture
+#
+# To enable end-to-end encryption (Cloudflare "Full (Strict)" mode):
+# 1. Add cert-manager and create a Certificate resource
+# 2. Uncomment the spec.tls section below
+# 3. Change Cloudflare SSL mode to "Full (Strict)"
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,11 +22,11 @@ metadata:
     app.kubernetes.io/component: frontend
   annotations:
     # Traefik (k3s default ingress controller)
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    # Only use 'web' entrypoint since Cloudflare handles TLS
+    traefik.ingress.kubernetes.io/router.entrypoints: web
 spec:
   ingressClassName: traefik
   rules:
-    # Main domain
     - host: thc1006.us
       http:
         paths:
@@ -24,3 +38,8 @@ spec:
                 port:
                   name: http
 
+  # Uncomment below for end-to-end TLS (requires cert-manager):
+  # tls:
+  #   - hosts:
+  #       - thc1006.us
+  #     secretName: thc1006-us-tls

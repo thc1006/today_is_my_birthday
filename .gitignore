@@ -1,2 +1,12 @@
+# Claude
 .claude/settings.json
 CLAUDE.md
+
+# Rust
+target/
+
+# Node.js
+node_modules/
+
+# Build artifacts
+*.tar

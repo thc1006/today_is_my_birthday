@@ -45,16 +45,15 @@ async fn security_headers(
     response
 }
 
-/// Custom 404 handler - serves 404.html
-async fn handle_404() -> impl IntoResponse {
-    let content = tokio::fs::read_to_string("/app/static/404.html")
-        .await
-        .unwrap_or_else(|_| "404 Not Found".to_string());
+/// Embedded 404 HTML content (compiled into the binary for performance)
+static NOT_FOUND_HTML: &str = include_str!("../static/404.html");
 
+/// Custom 404 handler - serves embedded 404.html
+async fn handle_404() -> impl IntoResponse {
     (
         StatusCode::NOT_FOUND,
         [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-        content,
+        NOT_FOUND_HTML,
     )
 }
 

@@ -7,17 +7,18 @@ RUN apk add --no-cache musl-dev
 # Create non-root user for build
 WORKDIR /build
 
-# Copy Cargo files first for dependency caching
-COPY Cargo.toml ./
+# Copy Cargo files first for dependency caching (including Cargo.lock for reproducible builds)
+COPY Cargo.toml Cargo.lock ./
 
 # Create dummy src for dependency caching
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 
-# Build dependencies only
-RUN cargo build --release && rm -rf src target/release/deps/thc1006*
+# Build dependencies only (locked versions)
+RUN cargo build --release --locked && rm -rf src target/release/deps/thc1006*
 
-# Copy actual source
+# Copy actual source and static files (needed for include_str! macro)
 COPY src ./src
+COPY static ./static
 
 # Build the actual binary
 RUN cargo build --release
