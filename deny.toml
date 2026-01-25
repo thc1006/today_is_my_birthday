@@ -1,9 +1,6 @@
 # cargo-deny 配置
 # https://embarkstudios.github.io/cargo-deny/
 
-# 使用 V2 格式
-version = 2
-
 [advisories]
 # 資安漏洞資料庫
 db-path = "~/.cargo/advisory-db"
