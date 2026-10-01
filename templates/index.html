@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{ home.page.title|safe }}</title>
+<meta name="description" content="{{ home.page.description|safe }}">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Tsai Hsiu-Chi 蔡秀吉">
+<meta name="keywords" content="{{ home.page.keywords|safe }}">
+<link rel="canonical" href="https://thc1006.us/">
+<link rel="stylesheet" href="style.css">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:title" content="{{ home.page.title|safe }}">
+<meta property="og:description" content="{{ home.page.og_description|safe }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thc1006.us/">
+<meta property="og:image" content="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials">
+<meta property="og:site_name" content="蔡秀吉 Tsai Hsiu-Chi">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@thc1006">
+{% include "ga.html" %}
+
+</head>
+<body>
+
+<header class="site-header">
+  <h1>蔡秀吉 <small>Tsai Hsiu-Chi</small> <img src="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials" alt="蔡秀吉頭像" width="96" height="96" style="float: right; margin-left: 1rem;"></h1>
+  <p class="tagline">{{ home.page.tagline|safe }}</p>
+  <nav class="nav">
+    <a href="#about">關於我</a> |
+    <a href="#research">研究與專案</a> |
+    <a href="#medicine">醫學筆記</a> |
+    <a href="#community">社群參與</a> |
+    <a href="#teaching">教學</a> |
+    <a href="#contact">聯絡</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <!-- 關於我 -->
+  <section id="about">
+    <h2>關於我</h2>
+    <p>
+{%- for line in home.about.intro %}
+      {{ line|safe }}
+{%- endfor %}
+    </p>
+    <ul class="keyfacts">
+{%- for item in home.about.keyfacts %}
+      <li>{{ item|safe }}</li>
+{%- endfor %}
+    </ul>
+
+    <h3>背景</h3>
+    <p>
+{%- for line in home.about.background %}
+      {{ line|safe }}
+{%- endfor %}
+    </p>
+    <p>
+{%- for line in home.about.exchange %}
+      {{ line|safe }}
+{%- endfor %}
+    </p>
+
+    <h3>學歷</h3>
+    <ul>
+{%- for item in home.about.education %}
+      <li>{{ item|safe }}</li>
+{%- endfor %}
+    </ul>
+
+    <h3>近期榮譽</h3>
+    <ul>
+{%- for item in home.about.honors %}
+      <li>{{ item|safe }}</li>
+{%- endfor %}
+    </ul>
+  </section>
+
+  <!-- 研究與專案 -->
+  <section id="research">
+    <h2>研究與專案</h2>
+
+    <h3>代表性出版</h3>
+    <ol>
+{%- for p in home.research.publications %}
+      <li><span class="yr">{{ p.year|safe }}</span> {% if p.url.is_empty() %}{{ p.title|safe }}{% else %}<a href="{{ p.url|safe }}" target="_blank" rel="noopener">{{ p.title|safe }}</a>{% endif %}（{{ p.venue|safe }}）</li>
+{%- endfor %}
+    </ol>
+    <p>{{ home.research.publications_more|safe }}</p>
+
+    <h3>核心專案</h3>
+    <div class="projects-grid">
+{%- for card in home.research.projects %}
+      <article class="card">
+        <h3>{{ card.title|safe }}</h3>
+        <p>{{ card.description|safe }}</p>
+        <ul>
+{%- for link in card.links %}
+          <li><a href="{{ link.url|safe }}" target="_blank" rel="noopener">{{ link.label|safe }}</a></li>
+{%- endfor %}
+        </ul>
+      </article>
+{%- if !loop.last %}
+{% endif %}
+{%- endfor %}
+    </div>
+  </section>
+
+  <!-- 醫學筆記 -->
+  <section id="medicine">
+    <h2>醫學筆記</h2>
+    <p>{{ home.medicine.intro|safe }}</p>
+    <ul>
+{%- for n in home.medicine.notes %}
+      <li><a href="{{ n.url|safe }}"{% if n.is_external() %} target="_blank" rel="noopener"{% endif %}>{{ n.title|safe }}</a>{% if !n.note.is_empty() %} — {{ n.note|safe }}{% endif %}</li>
+{%- endfor %}
+    </ul>
+  </section>
+
+  <!-- 社群參與 -->
+  <section id="community">
+    <h2>社群參與</h2>
+
+    <h3>學生自治</h3>
+    <p>
+{%- for line in home.community.student %}
+      {{ line|safe }}
+{%- endfor %}
+    </p>
+    <p><a href="{{ home.community.student_link.url|safe }}" target="_blank" rel="noopener">{{ home.community.student_link.label|safe }}</a></p>
+
+    <h3>技術社群</h3>
+    <p>
+{%- for line in home.community.tech %}
+      {{ line|safe }}
+{%- endfor %}
+    </p>
+    <p><a href="{{ home.community.tech_link.url|safe }}" target="_blank" rel="noopener">{{ home.community.tech_link.label|safe }}</a></p>
+  </section>
+
+  <!-- F. 教學（依你提供的清單，無連結者標示即將公開） -->
+  <section id="teaching">
+    <h2>教學與分享</h2>
+    <ul class="list">
+{%- for item in home.teaching.items %}
+      <li>{{ item|safe }}</li>
+{%- endfor %}
+    </ul>
+  </section>
+
+  <!-- 聯絡 -->
+  <section id="contact">
+    <h2>聯絡</h2>
+{%- for item in home.contact.lines %}
+    <p>{{ item|safe }}</p>
+{%- endfor %}
+  </section>
+
+</main>
+
+<footer class="site-footer">
+{%- for item in home.footer.lines %}
+  <p>{{ item|safe }}</p>
+{%- endfor %}
+  <p>© <span id="y">{{ year }}</span> Tsai Hsiu-Chi · 靜態網站 · 最後更新：<span id="lm">{{ updated }}</span></p>
+{% include "badge.html" %}</footer>
+
+<!-- JSON-LD 結構化資料（搜尋友善） -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"Person",
+  "name":"Tsai Hsiu-Chi",
+  "alternateName":"蔡秀吉",
+  "email":"mailto:hctsai@linux.com",
+  "image":"https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials",
+  "sameAs":[
+    "https://orcid.org/0000-0001-7421-8027",
+    "https://github.com/thc1006",
+    "https://www.linkedin.com/in/thc1006",
+    "https://hackmd.io/@thc1006"
+  ],
+  "knowsAbout":["Kubernetes","Dynamic Resource Allocation","Cloud-native systems","Distributed systems","O-RAN","Nephio","OpenTelemetry"]
+}
+</script>
+
+</body>
+</html>

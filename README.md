@@ -1,6 +1,6 @@
 # thc1006.us
 
-蔡秀吉的個人網站。頁面在 `static/`，直接改 HTML；`static/common.js` 由 `ts/common.ts` 編譯，改了它要跑 `pnpm run build`。main 只接受 PR。
+蔡秀吉的個人網站，頁面由 Rust 產生。首頁的資料在 `content/home.toml`，版面在 `templates/`，樣式在 `static/style.css`。改完跑 `cargo test`，它會把每一頁實際組一次。main 只接受 PR。
 
 ## 部署
 

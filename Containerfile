@@ -16,9 +16,10 @@ RUN mkdir src && echo "fn main() {}" > src/main.rs
 # Build dependencies only (locked versions)
 RUN cargo build --release --locked && rm -rf src target/release/deps/thc1006*
 
-# Copy actual source and static files (needed for include_str! macro)
+# Copy the source, templates and page data (templates and data are compiled into the binary)
 COPY src ./src
-COPY static ./static
+COPY templates ./templates
+COPY content ./content
 
 # Build the actual binary (with --locked for reproducible builds)
 RUN cargo build --release --locked
@@ -61,6 +62,10 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 # earlier step is cached; podman 3.4 skips `--label` in that case.
 ARG REVISION=unknown
 LABEL org.opencontainers.image.revision=$REVISION
+
+# The deployed commit's date, shown as 最後更新 in the homepage footer.
+ARG SITE_UPDATED=
+ENV SITE_UPDATED=$SITE_UPDATED
 
 # Run the server
 CMD ["/app/thc1006-web"]

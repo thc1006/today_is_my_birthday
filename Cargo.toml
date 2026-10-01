@@ -2,12 +2,16 @@
 name = "thc1006-web"
 version = "1.0.0"
 edition = "2024"
+rust-version = "1.85"
 authors = ["Tsai Hsiu-Chi <hctsai@linux.com>"]
-description = "Static file server for thc1006.us"
+description = "Server for thc1006.us; pages are rendered from templates and a data file"
 
 [dependencies]
+askama = "0.14"
 axum = "0.8"
+serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
+toml = "1"
 tower-http = { version = "0.6", features = ["fs", "compression-gzip"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

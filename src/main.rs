@@ -1,13 +1,16 @@
+mod pages;
+
 use axum::{
     Router,
     body::Body,
-    http::{HeaderName, HeaderValue, Request, Response, StatusCode, header},
+    http::{HeaderName, HeaderValue, Request, Response, StatusCode, Uri, header},
     middleware::{self, Next},
-    response::IntoResponse,
+    response::{Html, IntoResponse, Redirect},
+    routing::get,
 };
-use std::net::SocketAddr;
+use std::{net::SocketAddr, path::Path};
 use tower_http::{compression::CompressionLayer, services::ServeDir};
-use tracing::info;
+use tracing::{error, info};
 
 // Pre-defined security header names and values (compiled at build time, no per-request parsing)
 static REFERRER_POLICY: HeaderName = HeaderName::from_static("referrer-policy");
@@ -39,14 +42,13 @@ async fn security_headers(request: Request<Body>, next: Next) -> Response<Body> 
 
 static NO_CACHE: HeaderValue = HeaderValue::from_static("no-cache");
 
-/// Always send the current file, and make browsers check back for pages and scripts.
+/// Always send the current content, and make browsers check back for pages.
 ///
-/// Conditional request headers are dropped, so the server never answers 304. After a rollback
-/// the files carry an older Last-Modified, and a 304 would keep browsers on the newer build.
-/// HTML keeps its Last-Modified because the footer shows it as the page date.
+/// Conditional request headers are dropped, so static files are never answered with 304. After
+/// a rollback they carry an older Last-Modified, and a 304 would keep browsers on the newer build.
 ///
-/// HTML and JavaScript get `no-cache`. Without a lifetime, browsers guess one from
-/// Last-Modified, and a page unchanged for months could keep showing for weeks after a deploy.
+/// Pages get `no-cache`, so a deploy shows up on the next visit instead of whenever the
+/// browser's own guess about the cache lifetime runs out.
 async fn serve_current_files(mut request: Request<Body>, next: Next) -> Response<Body> {
     let headers = request.headers_mut();
     for name in [
@@ -63,14 +65,12 @@ async fn serve_current_files(mut request: Request<Body>, next: Next) -> Response
     }
 
     let mut response = next.run(request).await;
-    let revalidate = response
+    let is_page = response
         .headers()
         .get(header::CONTENT_TYPE)
         .and_then(|value| value.to_str().ok())
-        .is_some_and(|value| {
-            value.starts_with("text/html") || value.starts_with("text/javascript")
-        });
-    if revalidate {
+        .is_some_and(|value| value.starts_with("text/html"));
+    if is_page {
         response
             .headers_mut()
             .insert(header::CACHE_CONTROL, NO_CACHE.clone());
@@ -78,16 +78,35 @@ async fn serve_current_files(mut request: Request<Body>, next: Next) -> Response
     response
 }
 
-/// Embedded 404 HTML content (compiled into the binary for performance)
-static NOT_FOUND_HTML: &str = include_str!("../static/404.html");
+fn page(rendered: askama::Result<String>, status: StatusCode) -> Response<Body> {
+    match rendered {
+        Ok(html) => (status, Html(html)).into_response(),
+        Err(err) => {
+            error!("rendering a page failed: {err}");
+            StatusCode::INTERNAL_SERVER_ERROR.into_response()
+        }
+    }
+}
 
-/// Custom 404 handler - serves embedded 404.html
-async fn handle_404() -> impl IntoResponse {
-    (
-        StatusCode::NOT_FOUND,
-        [(header::CONTENT_TYPE, "text/html; charset=utf-8")],
-        NOT_FOUND_HTML,
-    )
+async fn home() -> Response<Body> {
+    page(pages::home(), StatusCode::OK)
+}
+
+async fn pe() -> Response<Body> {
+    page(pages::pe(), StatusCode::OK)
+}
+
+async fn not_found(uri: Uri) -> Response<Body> {
+    page(pages::not_found(uri.path()), StatusCode::NOT_FOUND)
+}
+
+/// `thc1006-web render <dir>` writes the pages as files, so CI can run an HTML validator on them.
+fn render_to(dir: &Path) -> Result<(), Box<dyn std::error::Error>> {
+    std::fs::create_dir_all(dir.join("PE"))?;
+    std::fs::write(dir.join("index.html"), pages::home()?)?;
+    std::fs::write(dir.join("PE/index.html"), pages::pe()?)?;
+    std::fs::write(dir.join("404.html"), pages::not_found("/404.html")?)?;
+    Ok(())
 }
 
 #[tokio::main]
@@ -99,14 +118,33 @@ async fn main() {
         )
         .init();
 
-    // Serve static files with fallback to 404
-    let serve_dir = ServeDir::new("/app/static")
-        .append_index_html_on_directories(true)
-        .fallback(axum::routing::get(handle_404));
+    // Parse the data files first: bad data should stop the server, not break a page later.
+    pages::load();
 
-    // Build application router
+    let args: Vec<String> = std::env::args().skip(1).collect();
+    if args.first().map(String::as_str) == Some("render") {
+        let Some(dir) = args.get(1) else {
+            error!("usage: thc1006-web render <dir>");
+            std::process::exit(2);
+        };
+        if let Err(err) = render_to(Path::new(dir)) {
+            error!("render failed: {err}");
+            std::process::exit(1);
+        }
+        info!("Pages written to {dir}");
+        return;
+    }
+
+    // Pages come from the templates; the stylesheet and images are served from /app/static.
+    let static_files = ServeDir::new("/app/static").fallback(get(not_found));
+
     let app = Router::new()
-        .fallback_service(serve_dir)
+        .route("/", get(home))
+        .route("/index.html", get(home))
+        .route("/PE", get(|| async { Redirect::temporary("/PE/") }))
+        .route("/PE/", get(pe))
+        .route("/PE/index.html", get(pe))
+        .fallback_service(static_files)
         .layer(CompressionLayer::new())
         .layer(middleware::from_fn(serve_current_files))
         .layer(middleware::from_fn(security_headers));

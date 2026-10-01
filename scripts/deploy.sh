@@ -28,7 +28,9 @@ else
   source_dir=$(mktemp -d)
   trap 'rm -rf "$source_dir"' EXIT
   git archive HEAD | tar -x -C "$source_dir"
-  podman build -t "$image" --build-arg "REVISION=$revision" "$source_dir"
+  # 首頁頁尾的「最後更新」：commit 的時間，用台灣時間、和瀏覽器 document.lastModified 一樣的格式。
+  updated=$(TZ=Asia/Taipei git log -1 --format=%cd --date=format-local:'%m/%d/%Y %H:%M:%S')
+  podman build -t "$image" --build-arg "REVISION=$revision" --build-arg "SITE_UPDATED=$updated" "$source_dir"
   podman save "$image" | sudo k3s ctr -n k8s.io images import -
 fi
 
