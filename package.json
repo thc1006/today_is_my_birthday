@@ -5,8 +5,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild ts/common.ts --bundle --minify --outfile=static/common.js --target=es2020",
-    "watch": "esbuild ts/common.ts --bundle --outfile=static/common.js --target=es2020 --watch",
+    "build": "esbuild ts/script.ts --bundle --minify --outfile=static/script.js --target=es2019",
+    "watch": "esbuild ts/script.ts --bundle --outfile=static/script.js --target=es2019 --watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint ts/",
     "lint:fix": "eslint ts/ --fix",

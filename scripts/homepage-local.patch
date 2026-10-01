@@ -1,0 +1,28 @@
+thc1006.us 首頁比 NYCU 版多的三個連結：學生自治與選務經歷、GDSC NYCU 年鑑、捷克交換學生生存手冊。
+這三個連結只在舊版 thc1006.us 首頁出現過，personal-homepage 沒有。
+scripts/sync-homepage.sh 改好網址之後會套用這份 patch。
+
+上游改到首頁「延伸」那一行時，patch 會套不上，同步就停下。照這些步驟重做：
+
+  SKIP_LOCAL_PATCH=1 scripts/sync-homepage.sh   # 先不套 patch，拿到上游最新的首頁
+  cp static/index.html /tmp/index.orig.html
+  # 編輯 static/index.html，把三個連結加回「延伸」那一行
+  { sed '/^--- /,$d' scripts/homepage-local.patch
+    diff -u --label a/index.html --label b/index.html /tmp/index.orig.html static/index.html; } >/tmp/new.patch
+  mv /tmp/new.patch scripts/homepage-local.patch
+  scripts/sync-homepage.sh                      # 確認新的 patch 套得上
+
+下面是 patch 本體；patch 指令會略過上面這段說明。
+
+--- a/index.html
++++ b/index.html
+@@ -248,6 +248,9 @@
+         </p>
+         <p class="muted about-links">
+           延伸：<a href="https://hackmd.io/@thc1006/rkhYssej5" target="_blank" rel="noopener">學術經歷 HackMD</a> ·
++          <a href="https://hackmd.io/@thc1006/BkISLKV5eg" target="_blank" rel="noopener">學生自治與選務經歷</a> ·
++          <a href="https://hackmd.io/zVGjlY4uTuORX1mCWcYLcw" target="_blank" rel="noopener">GDSC NYCU 年鑑</a> ·
++          <a href="https://hackmd.io/@tchajwan/tchaj-wan-student-survival-guide" target="_blank" rel="noopener">捷克交換學生生存手冊</a> ·
+           <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">多媒體創作集</a> ·
+           <a href="https://www.linkedin.com/in/thc1006" target="_blank" rel="noopener">LinkedIn</a>
+         </p>

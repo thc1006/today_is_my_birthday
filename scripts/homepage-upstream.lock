@@ -1,0 +1,4 @@
+# static/ 是從 personal-homepage 的哪個 commit 同步來的，以及 ts/script.ts 對應上游哪一版 script.js。
+# COMMIT 由 scripts/sync-homepage.sh 自動更新；SCRIPT_SHA256 在改完 ts/script.ts 之後手動更新。
+COMMIT=69625f74ca9572239d7295bbcb4c9df6f4903b09
+SCRIPT_SHA256=1f0bbb7122cb7c9cfc8e304181fa07148547a8673bc960a7eb0cdc6126379797

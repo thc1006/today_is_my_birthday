@@ -37,6 +37,47 @@ async fn security_headers(request: Request<Body>, next: Next) -> Response<Body> 
     response
 }
 
+static NO_CACHE: HeaderValue = HeaderValue::from_static("no-cache");
+
+/// Always send the current file, and make browsers check back for pages and scripts.
+///
+/// Conditional request headers are dropped, so the server never answers 304. After a rollback
+/// the files carry an older Last-Modified, and a 304 would keep browsers on the newer build.
+/// HTML keeps its Last-Modified because the footer shows it as the page date.
+///
+/// HTML and JavaScript get `no-cache`. Without a lifetime, browsers guess one from
+/// Last-Modified, and a page unchanged for months could keep showing for weeks after a deploy.
+async fn serve_current_files(mut request: Request<Body>, next: Next) -> Response<Body> {
+    let headers = request.headers_mut();
+    for name in [
+        header::IF_MODIFIED_SINCE,
+        header::IF_NONE_MATCH,
+        header::IF_UNMODIFIED_SINCE,
+        header::IF_MATCH,
+    ] {
+        headers.remove(name);
+    }
+    // A range is only safe to serve when its If-Range still matches; send the whole file instead.
+    if headers.remove(header::IF_RANGE).is_some() {
+        headers.remove(header::RANGE);
+    }
+
+    let mut response = next.run(request).await;
+    let revalidate = response
+        .headers()
+        .get(header::CONTENT_TYPE)
+        .and_then(|value| value.to_str().ok())
+        .is_some_and(|value| {
+            value.starts_with("text/html") || value.starts_with("text/javascript")
+        });
+    if revalidate {
+        response
+            .headers_mut()
+            .insert(header::CACHE_CONTROL, NO_CACHE.clone());
+    }
+    response
+}
+
 /// Embedded 404 HTML content (compiled into the binary for performance)
 static NOT_FOUND_HTML: &str = include_str!("../static/404.html");
 
@@ -67,6 +108,7 @@ async fn main() {
     let app = Router::new()
         .fallback_service(serve_dir)
         .layer(CompressionLayer::new())
+        .layer(middleware::from_fn(serve_current_files))
         .layer(middleware::from_fn(security_headers));
 
     // Server address

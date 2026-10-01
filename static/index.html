@@ -1,192 +1,375 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>蔡秀吉 Tsai Hsiu-Chi — 學術與專案首頁</title>
-<meta name="description" content="蔡秀吉 Tsai Hsiu-Chi｜O-RAN、雲原生自動化、AI 與神經科學。此站聚合研究、出版、教學、專案與開源社群貢獻。">
-<meta name="robots" content="index, follow">
-<meta name="author" content="Tsai Hsiu-Chi 蔡秀吉">
-<meta name="keywords" content="蔡秀吉,Tsai Hsiu-Chi,O-RAN,Nephio,Kubernetes,GitOps,LLM,醫學,ECMO,陽明交通大學">
+<meta name="color-scheme" content="light dark">
+<title>蔡秀吉 Hsiu-Chi Tsai</title>
+<meta name="description" content="蔡秀吉 Hsiu-Chi Tsai|研究雲原生與分散式系統如何在資源受限、狀態變動與故障下維持正確。聚焦 Kubernetes DRA、雲原生電信和其他 CNCF 專案：追查資源會計與並行錯誤、建回歸測試、進行開源貢獻。CNCF Ambassador、Nephio (LFN) TSC Member、NYCU CS WinLab 研究助理。">
+<meta name="author" content="Hsiu-Chi Tsai 蔡秀吉">
 <link rel="canonical" href="https://thc1006.us/">
-<link rel="stylesheet" href="style.css">
 
-<!-- Open Graph / Twitter -->
-<meta property="og:title" content="蔡秀吉 Tsai Hsiu-Chi — 學術與專案首頁">
-<meta property="og:description" content="O-RAN｜雲原生自動化｜AI｜神經科學｜研究、出版、教學、專案與開源貢獻。">
-<meta property="og:type" content="website">
+<meta property="og:title" content="蔡秀吉 Hsiu-Chi Tsai">
+<meta property="og:description" content="研究雲原生與分散式系統如何在資源受限、狀態變動與故障下維持正確。聚焦 Kubernetes DRA、雲原生電信和其他 CNCF 專案：追查資源會計與並行錯誤、建回歸測試、進行開源貢獻。CNCF Ambassador、Nephio (LFN) TSC Member。">
+<meta property="og:type" content="profile">
 <meta property="og:url" content="https://thc1006.us/">
-<meta property="og:image" content="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials">
-<meta property="og:site_name" content="蔡秀吉 Tsai Hsiu-Chi">
+<meta property="og:image" content="https://thc1006.us/assets/og-thumb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="蔡秀吉 Hsiu-Chi Tsai · CNCF Ambassador · Nephio TSC · 2023 總統教育獎">
+<meta property="og:site_name" content="蔡秀吉 Hsiu-Chi Tsai">
+<meta property="og:locale" content="zh_TW">
+<meta property="profile:first_name" content="Hsiu-Chi">
+<meta property="profile:last_name" content="Tsai">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@thc1006">
+<meta name="twitter:creator" content="@thc1006">
+<meta name="twitter:image" content="https://thc1006.us/assets/og-thumb.jpg">
+<meta name="twitter:image:alt" content="蔡秀吉 Hsiu-Chi Tsai · CNCF Ambassador · Nephio TSC · 2023 總統教育獎">
 
+<script>
+(() => {
+  const stored = localStorage.getItem('theme');
+  const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = stored || system;
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media=&#39;all&#39;">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/style.css?v=c31edcb8">
+<style>
+/* ============================================================
+   首頁 Hero（scoped 版面；氛圍光暈 glow 與動效安全定義在全域 style.css）。
+   「研究主張先於身分」：thesis 先行、一個主 CTA、純色姓名、
+   4:5 直式人像卡（Gravatar 證件照+後方氛圍光暈）、內容決定高度、
+   手機頭像置頂置中。個人故事（醫/電資/戲劇/漁村）完整保留在下方 #about。
+   ============================================================ */
+.hero { padding: clamp(3.5rem,8vw,6.5rem) clamp(1rem,4vw,2rem) clamp(3rem,6vw,5rem); }
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) clamp(9rem,18vw,13rem);
+  gap: clamp(2rem,5vw,4rem);
+  align-items: start;
+}
+.hero-copy { min-width: 0; }
+.hero-name { display: flex; flex-direction: column; gap: 0.35rem; margin: 0 0 1.6rem; }
+.hero-name-zh {
+  color: var(--fg); font-family: var(--font-zh);
+  font-size: clamp(2.75rem,7vw,4.75rem); font-weight: 900; line-height: 1; letter-spacing: -0.035em;
+}
+.hero-name-en {
+  color: var(--fg-muted); font-family: var(--font-en);
+  font-size: clamp(1rem,2vw,1.25rem); font-weight: 500; letter-spacing: 0.01em;
+}
+.hero-thesis {
+  max-width: 28em; margin: 0 0 1rem; color: var(--fg);
+  font-size: clamp(1.3rem,2.5vw,1.9rem); font-weight: 600; line-height: 1.45;
+}
+/* 2026-09-18 拿掉 hero-detail 與 hero-roles 的 max-width: 56ch。ch 是拉丁字元寬，中文段落在 764px 的欄裡只吃到 519px／435px，
+   看起來像硬換行；讓兩段跟欄同寬。thesis 的 28em 留著，它是頁上最大的字、靠 balance 排成等長兩行。 */
+.hero-detail { margin: 0 0 1.15rem; color: var(--fg-muted); font-size: 1rem; line-height: 1.75; }
+/* 中文沒有空格，瀏覽器會在任意兩字之間斷行，量過會把「資源」「會計」切開。keep-all 讓 CJK 只在標點與空白處斷；
+   thesis 是頁上最大的字，再用 balance 讓兩行等長、不留孤行。 */
+.hero-thesis, .hero-detail { word-break: keep-all; overflow-wrap: anywhere; }
+.hero-thesis { text-wrap: balance; }
+.hero-roles {
+  margin: 0 0 1.6rem; color: var(--fg-subtle);
+  font-family: var(--font-en),var(--font-zh); font-size: 0.9rem; line-height: 1.7;
+}
+/* 現任治理身分（CNCF Ambassador／Nephio TSC）加粗並用連結同色的 accent 藍；
+   Nephio 沒有可連的官方名冊頁，故只上色不做連結。 */
+.hero-roles strong { color: var(--accent); font-weight: 700; }
+/* 每個身分是一個不可分割的單元，只能在「·」處換行；Release Team 那個拆成兩段、中間 <wbr>，手機寬度才不會溢出。 */
+.hero-roles > a, .hero-roles > strong, .hero-roles > span { white-space: nowrap; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1rem; }
+.hero-action-primary {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.62rem 1.1rem; border: 1px solid var(--fg); border-radius: 6px;
+  background: var(--fg); color: var(--bg); font-size: 0.9rem; font-weight: 600; text-decoration: none;
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+.hero-action-primary:hover { background: var(--accent); border-color: var(--accent); color: var(--bg); text-decoration: none; }
+.hero-action-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.hero-action-link {
+  color: var(--fg-muted); font-size: 0.9rem; font-weight: 700;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.hero-action-link:hover { color: var(--accent); text-decoration: none; }
+.hero-action-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+.hero-portrait { display: block; width: 100%; aspect-ratio: 4 / 5; margin-top: 0.25rem; }
+.hero-portrait img {
+  display: block; width: 100%; height: 100%; object-fit: cover; object-position: center;
+  border-radius: 10px;                      /* 矩形人像卡：4:5 直式、微圓角 10px + 陰影 */
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+}
+@media (max-width: 720px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  /* 手機版頭像置頂置中；桌面維持文字左、照片右。 */
+  .hero-portrait { order: -1; width: clamp(100px, 28vw, 116px); margin: 0 auto; }
+}
+</style>
 </head>
+
 <body>
 
-<header class="site-header">
-  <h1>蔡秀吉 <small>Tsai Hsiu-Chi</small> <img src="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials" alt="蔡秀吉頭像" width="96" height="96" style="float: right; margin-left: 1rem;"></h1>
-  <p class="tagline">讀醫讀電資又讀戲劇，技能樹亂點的人生。</p>
-  <nav class="nav">
-    <a href="#about">關於我</a> |
-    <a href="#research">研究與專案</a> |
-    <a href="#medicine">醫學筆記</a> |
-    <a href="#community">社群參與</a> |
-    <a href="#teaching">教學</a> |
-    <a href="#contact">聯絡</a>
-  </nav>
+
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/" aria-label="蔡秀吉 Hsiu-Chi Tsai，回到首頁">
+      <span class="brand-name">蔡秀吉</span>
+      <span class="brand-sub">Hsiu-Chi Tsai</span>
+    </a>
+    <nav class="topnav" aria-label="主導覽">
+      <a href="/#about" data-page="about">About</a>
+      <a href="/publications/" data-page="publications">Publications</a>
+      <a href="/honors/" data-page="honors">Honors</a>
+      <a href="/open-source/" data-page="open-source">Open Source</a>
+      <a href="/experience/" data-page="experience">Experience</a>
+      <a href="https://people.cs.nycu.edu.tw/~hctsai1006/blog/" data-page="blog">Writing</a>
+      <a href="/medical/" data-page="medical">Medical</a>
+      <a href="/contact/" data-page="contact">Contact</a>
+    </nav>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="切換主題" title="切換主題">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
 </header>
 
-<main class="container">
+<main id="main" tabindex="-1">
 
-  <!-- 關於我 -->
-  <section id="about">
-    <h2>關於我</h2>
-    <p>
-      我關注 <strong>雲原生與電信網路自動化（O-RAN、Nephio、GitOps）</strong>、<strong>大型語言模型於網路管理與科學運算</strong>、
-      以及 <strong>資料驅動的神經科學教學工具</strong>。目標是把研究變成「可重現、可維運」的系統。
-    </p>
-    <ul class="keyfacts">
-      <li>關鍵詞：O-RAN、Nephio、Intent-based MANO、Kubernetes、GitOps、LLM、Reproducible Research</li>
-      <li>完整履歷：<a href="https://hackmd.io/@thc1006/rkhYssej5" target="_blank" rel="noopener">學術經歷及文章著作</a> | <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">多媒體創作集</a></li>
-    </ul>
-
-    <h3>背景</h3>
-    <p>
-      吾人出身討海漁家，家境弱勢，目前大學三年級，就學間半工半讀，以敷闔家之溫飽。個性誠厚直率，不擅交際，唯一日工作十四、十五小時，身體亦足堪擔負，現漂泊北棲，嗜學如命，無菸酒不良嗜好。
-    </p>
-    <p>
-      <strong>海外交換：</strong><a href="http://hackmd.io/@tchajwan/tchaj-wan-student-survival-guide" target="_blank" rel="noopener">捷克交換學生生存手冊</a> (CC BY-NC 4.0)
-    </p>
-  </section>
-
-  <!-- 研究與專案 -->
-  <section id="research">
-    <h2>研究與專案</h2>
-
-    <h3>代表性出版</h3>
-    <ol>
-      <li><span class="yr">2025</span> Intent-based Network Automation（技術說明與實驗報告，撰寫中）</li>
-      <li><span class="yr">2024</span> Minimal Neuroscience Labs with Python（教學筆記）</li>
-    </ol>
-
-    <h3>核心專案</h3>
-    <div class="projects-grid">
-      <article class="card">
-        <h3>Intent-based O-RAN / Nephio</h3>
-        <p>文字意圖 → KRM → O-RAN/O-Cloud 自動化部署與驗證。</p>
-        <ul>
-          <li><a href="https://github.com/thc1006/nephio-intent-to-o2-demo" target="_blank" rel="noopener">GitHub</a></li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>Exoplanet Hunters</h3>
-        <p>NASA 開放資料系外行星偵測：BLS/TLS + ML 分類。</p>
-        <ul>
-          <li><a href="https://github.com/exoplanet-spaceapps" target="_blank" rel="noopener">GitHub</a></li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>ECMO 臨床決策支援</h3>
-        <p>醫療資料與 AI 臨床決策支援系統。</p>
-        <ul>
-          <li><a href="https://github.com/thc1006/TAIWAN-ECMO-CDSS-NEXT" target="_blank" rel="noopener">GitHub</a></li>
-        </ul>
-      </article>
-
-      <article class="card">
-        <h3>更多專案</h3>
-        <p>O-RAN MANO、聯邦學習、Whisper TPU、108 課綱平台等。</p>
-        <ul>
-          <li><a href="https://github.com/thc1006" target="_blank" rel="noopener">完整列表</a></li>
-        </ul>
-      </article>
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1 class="hero-name" id="hero-title">
+          <span class="hero-name-zh">蔡秀吉</span>
+          <span class="hero-name-en" lang="en">Hsiu-Chi Tsai</span>
+        </h1>
+        <p class="hero-thesis">我研究雲原生與分散式系統，如何在資源受限、狀態變動與故障下維持正確。</p>
+        <p class="hero-detail">目前聚焦 Kubernetes DRA、雲原生電信和其他 CNCF 專案：追查資源會計、生命週期與並行錯誤，建立回歸測試，進行開源貢獻。</p>
+        <p class="hero-roles"><a href="https://www.cncf.io/people/ambassadors/?p=hsiu-chi-tsai&amp;_sf_s=Hsiu-Chi%20Tsai" target="_blank" rel="noopener"><strong>CNCF Ambassador</strong></a> · <strong>Nephio (LFN) TSC Member</strong> · <span>Kubernetes v1.38 Release Team</span><wbr><span>（Signal Shadow）</span><br>NYCU CS WinLab 研究助理</p>
+        <div class="hero-actions">
+          <a class="hero-action-primary" href="/open-source/">看代表工作</a>
+          <a class="hero-action-link" href="/publications/">研究發表</a>
+          <a class="hero-action-link" href="https://github.com/thc1006" target="_blank" rel="noopener">GitHub</a>
+          <a class="hero-action-link" href="mailto:hctsai@linux.com">Email</a>
+        </div>
+      </div>
+      <div class="hero-portrait">
+        <img src="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&amp;d=initials"
+             srcset="https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=384&amp;d=initials 384w,
+                     https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&amp;d=initials 512w"
+             sizes="(max-width: 720px) 116px, (max-width: 1100px) 18vw, 208px"
+             alt="" width="240" height="240" loading="eager" decoding="async">
+      </div>
     </div>
   </section>
 
-  <!-- 醫學筆記 -->
-  <section id="medicine">
-    <h2>醫學筆記</h2>
-    <p>臨床筆記、藥理學與重症醫學學習紀錄。</p>
-    <ul>
-      <li><a href="PE/">肺栓塞 PE</a> — Pulmonary Embolism 診斷與治療</li>
-      <li><a href="https://hackmd.io/@thc1006/Bk9QhUEMgl" target="_blank" rel="noopener">VA ECMO</a> — 體外動脈靜脈循環</li>
-      <li><a href="https://hackmd.io/HitS9hltQOy-6IgsQSEPdA" target="_blank" rel="noopener">呼吸器相關肺炎 VAP</a></li>
-      <li><a href="https://hackmd.io/ALz3yHRNQIWVTd3LOORFyg" target="_blank" rel="noopener">OHCA 患者 VAP 治療</a></li>
-      <li><a href="https://hackmd.io/jx8FDdGsSfWX8IYxx-b8Ww" target="_blank" rel="noopener">DM 患者 sVT 案例</a></li>
-      <li><a href="https://hackmd.io/4cA568sPQ22VCheiAMmeGg" target="_blank" rel="noopener">重症醫學考題集</a></li>
-      <li><a href="https://hackmd.io/rczVsSn_Q1CtvtDb-15WzA" target="_blank" rel="noopener">抗憂鬱劑 Antidepressants</a></li>
-      <li><a href="https://hackmd.io/npYvTVeEQLKRLX3Xu68iJQ" target="_blank" rel="noopener">鎮定安眠藥物 Psychotropics</a></li>
-      <li><a href="https://hackmd.io/zdKttje_SuWj_8cKGevX2w" target="_blank" rel="noopener">PGY 學習資源彙整</a></li>
-    </ul>
+  <!-- =================================================== -->
+  <!-- AT A GLANCE — 一眼認識（可點進對應區）                  -->
+  <!-- =================================================== -->
+  <section class="section section-tight" data-reveal aria-labelledby="glance-heading">
+    <h2 id="glance-heading" class="visually-hidden">重點摘要</h2>
+    <div class="stat-grid">
+      <a class="stat-card" href="/open-source/">
+        <span class="stat-num">350+</span>
+        <span class="stat-label">Merged PRs</span>
+        <span class="stat-sub">CNCF · LFN · ASWF · 上游合併</span>
+      </a>
+      <a class="stat-card" href="/publications/">
+        <span class="stat-num">15+</span>
+        <span class="stat-label">Publications</span>
+        <span class="stat-sub">IEEE 會議 · preprint · 2023 — 2026</span>
+      </a>
+      <a class="stat-card" href="/honors/">
+        <span class="stat-num">80+</span>
+        <span class="stat-label">Honors</span>
+        <span class="stat-sub">總統教育獎 · 國科會研究創作獎</span>
+      </a>
+      <a class="stat-card" href="#about">
+        <span class="stat-num">5</span>
+        <span class="stat-label">跨國學研</span>
+        <span class="stat-sub">台 · 捷 · 德 · 中 · 韓</span>
+      </a>
+    </div>
   </section>
 
-  <!-- 社群參與 -->
-  <section id="community">
-    <h2>社群參與</h2>
+  <!-- =================================================== -->
+  <!-- ABOUT — 自述 + Education / Languages / Skills / Honors -->
+  <!-- =================================================== -->
+  <section class="section" id="about" data-reveal>
+    <div class="section-head">
+      <p class="kicker">About</p>
+      <h2>關於我</h2>
+      <p class="section-sub">跨域多所學歷 · AI RAN 研究 · 半工半讀走過的學習旅程。</p>
+    </div>
 
-    <h3>學生自治</h3>
-    <p>
-      在陽明交通大學學生自治體系中兼具行政與立法經驗，完成「移除英文畢業門檻」與「心理調適假」制度化變更，推動「校自主學士學位」通過（114 學年度實施）。
-      擔任第六屆會長選舉典選委員會「委員長」，榮獲<strong>總統教育獎 - 奮發向上獎（2023）</strong>。
-    </p>
-    <p><a href="https://hackmd.io/@thc1006/BkISLKV5eg" target="_blank" rel="noopener">完整履歷</a></p>
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="lead">
+          從屏東大鵬灣漁村，一路半工半讀走到雲原生電信、AI RAN 與臨床醫學的交會點：
+          在 <strong>Nephio (LFN)</strong> 做開源治理，在 <strong>WinLab</strong> 做 AI RAN 研究，也在醫院當過路障。
+        </p>
+        <p>
+          我曾就讀過多所學校：陽明交通大學百川學士學位學程（人工智慧生醫組）、
+          清華大學電機資訊學院學士班、捷克查理大學 Hradec Králové 醫學系、政治大學斯拉夫語文學系（捷克語學程），
+          並有過上海交通大學、漢陽大學進修，以及韓國浦項工科大學（POSTECH）APRU 暑期交換。
+        </p>
+        <p>
+          海外研究與訓練：<strong>捷克理工大學 6Gmobile Research Lab</strong> 訪問研究（聯邦學習，2023/09—2024/07）、
+          <strong>德國 Universitätsklinikum des Saarlandes</strong> 重症醫學教育訓練（2024/04—06、2025/04—06 兩度受訓）、
+          捷克查理大學 Hradec Králové 大學附設醫院外科系見習（2024/06—09）。
+        </p>
+        <p>
+          技術上目前持續向 CNCF 與 Linux Foundation 旗下專案提交 PR（Kubernetes、Jaeger、OpenTelemetry、Nephio 等）。
+          先前曾任廣達電腦（QCT）O-RAN OAM Developer Intern、NARLabs 台灣半導體研究中心海外人才培育組駐布拉格人員，
+          以及多個 NYCU 5G / O-RAN 相關計畫的研究助理。
+        </p>
+        <p>
+          學生自治：陽明交大學生會秘書長（2024/10 — 2026/09，現任秘書，主責雲端與資訊系統）、交大學生議會一般不分區學生議員（2024 秋 — 2026/04）、交大分會副會長。
+          技術社群：Google Developer Groups on Campus Lead（NYCU、Czech Technical University 兩任）、2023 Google I/O Extended Hsinchu 總召集人。
+        </p>
+        <p>
+          其他：帶領「語您童行 Tai-Gi」團隊以台語、客語做科普，獲教育部青年署 Young 飛卓越行動獎。
+          曾在中研院用全台語演講 5G O-RAN 技術。蘭陽戲劇團「天公疼憨人」飾丑角尚福氣。
+          東港迎王平安祭典戊戌正科涼傘手；應吳念真導演之邀擔任保力達 B 廣告編劇。
+        </p>
+        <p>
+          高中畢業時家中遭遇重大境遇，曾考慮簽海軍陸戰隊志願役，
+          最後選擇揹學貸半工半讀進入陽明交大。2023 年獲頒總統教育獎奮發向上獎。
+        </p>
+        <p class="muted about-links">
+          延伸：<a href="https://hackmd.io/@thc1006/rkhYssej5" target="_blank" rel="noopener">學術經歷 HackMD</a> ·
+          <a href="https://hackmd.io/@thc1006/BkISLKV5eg" target="_blank" rel="noopener">學生自治與選務經歷</a> ·
+          <a href="https://hackmd.io/zVGjlY4uTuORX1mCWcYLcw" target="_blank" rel="noopener">GDSC NYCU 年鑑</a> ·
+          <a href="https://hackmd.io/@tchajwan/tchaj-wan-student-survival-guide" target="_blank" rel="noopener">捷克交換學生生存手冊</a> ·
+          <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">多媒體創作集</a> ·
+          <a href="https://www.linkedin.com/in/thc1006" target="_blank" rel="noopener">LinkedIn</a>
+        </p>
+      </div>
 
-    <h3>技術社群</h3>
-    <p>
-      GDSC NYCU 2022-2023 年度 Lead，舉辦 15 場技術活動（Kubernetes、Firebase、Flutter 等），
-      430 人次報名、出席率 86.3%，舉辦 Google I/O Extended 2023 Hsinchu。
-    </p>
-    <p><a href="https://hackmd.io/zVGjlY4uTuORX1mCWcYLcw" target="_blank" rel="noopener">完整年鑑</a></p>
-  </section>
+      <!-- 學歷與技能是「關於我」的主要內容，不是附帶資訊，所以不用 <aside>：
+           aside 會對映到 ARIA complementary landmark，等於告訴輔助技術這裡可以略過。 -->
+      <div class="sidebar">
+        <div class="sidebar-block">
+          <h3>Education · 跨域多所</h3>
+          <ul class="edu-list">
+            <li>
+              <span class="edu-school">國立陽明交通大學</span>
+              <span class="edu-major">百川學士學位學程（人工智慧 生醫組）</span>
+              <span class="edu-year">2021/10 — Present</span>
+            </li>
+            <li>
+              <span class="edu-school">國立清華大學</span>
+              <span class="edu-major">電機資訊學院學士班 · Interdisciplinary EECS</span>
+              <span class="edu-year">2022/12 — 2024/02</span>
+            </li>
+            <li>
+              <span class="edu-school">Univerzita Karlova（查理大學）</span>
+              <span class="edu-major">Faculty of Medicine in Hradec Králové · 基礎醫學 + 外科實習</span>
+              <span class="edu-year">2023/09 — Present</span>
+            </li>
+            <li>
+              <span class="edu-school">Universitätsklinikum des Saarlandes</span>
+              <span class="edu-major">Intensive Care Medicine（重症醫學）教育訓練</span>
+              <span class="edu-year">德國</span>
+            </li>
+            <li>
+              <span class="edu-school">České vysoké učení technické (CTU)</span>
+              <span class="edu-major">電信工程系 · 6Gmobile Research Lab（訪問研究）</span>
+              <span class="edu-year">捷克理工大學</span>
+            </li>
+            <li>
+              <span class="edu-school">國立政治大學</span>
+              <span class="edu-major">斯拉夫語文學系 · 捷克語學程</span>
+              <span class="edu-year">2022/07 — Present</span>
+            </li>
+            <li>
+              <span class="edu-school">上海交通大學（SJTU）</span>
+              <span class="edu-major">生命科學院 Virtual Exchange</span>
+              <span class="edu-year">2024</span>
+            </li>
+            <li>
+              <span class="edu-school">한양대학교（漢陽大學）</span>
+              <span class="edu-major">經濟金融系 · Principles of Microeconomics</span>
+              <span class="edu-year">2024</span>
+            </li>
+            <li>
+              <span class="edu-school">POSTECH 韓國浦項工科大學</span>
+              <span class="edu-major">機械工程系 · APRU 交換生</span>
+              <span class="edu-year">2022</span>
+            </li>
+          </ul>
+        </div>
 
-  <!-- F. 教學（依你提供的清單，無連結者標示即將公開） -->
-  <section id="teaching">
-    <h2>教學與分享</h2>
-    <ul class="list">
-      <li>下世代無線通訊技術及資訊安全 — <a href="https://youtu.be/m4126uQk0T8" target="_blank" rel="noopener">YouTube</a></li>
-      <li>人工智慧賦能之電信網路雲原生轉型 — <a href="https://youtube.com/playlist?list=PLMmZLmhgqGQehzE6GKDhvuXh5ngAXJUG6&si=mqOuJjAXFSF1t-X9" target="_blank" rel="noopener">播放清單</a></li>
-      <li>如何為開源做貢獻？（投影片即將公開）</li>
-      <li>創新生成式 AI 應用 — <a href="https://hackmd.io/@thc1006/SyC7RZVdC" target="_blank" rel="noopener">HackMD</a></li>
-      <li>媒體內容用於大型語言模型訓練 — <a href="https://github.com/thc1006/sociotechnical-harms" target="_blank" rel="noopener">GitHub</a></li>
-    </ul>
-  </section>
-
-  <!-- 聯絡 -->
-  <section id="contact">
-    <h2>聯絡</h2>
-    <p>Email：<a href="mailto:hctsai@linux.com">hctsai@linux.com</a>、<a href="mailto:thc1006@ieee.org">thc1006@ieee.org</a></p>
-    <p>ORCID：<a href="https://orcid.org/0000-0001-7421-8027" target="_blank" rel="me noopener">0000-0001-7421-8027</a></p>
+        <div class="sidebar-block">
+          <h3>Skills · Languages</h3>
+          <div class="skill-cluster">
+            <div class="skill-group">
+              <span class="skill-label">研究主軸</span>
+              <span class="skill-chips">AI RAN · NTN · 5G-Advanced / 6G · NVIDIA Aerial</span>
+            </div>
+            <div class="skill-group">
+              <span class="skill-label">Stack</span>
+              <span class="skill-chips">Python · Go · TypeScript · Kubernetes · Docker · ML / NLP / MLOps</span>
+            </div>
+            <div class="skill-group">
+              <span class="skill-label">語言</span>
+              <span class="skill-chips">中文 · 台語（可演講）· 客語 · English · 捷克語</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
 </main>
 
 <footer class="site-footer">
-  <p>流淚撒種的、必歡呼收割。詩篇 126:5</p>
-  <p>多媒體創作集 — <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">https://thc1006.craft.me/resume_2025</a></p>
-  <p>© <span id="y"></span> Tsai Hsiu-Chi · 靜態網站 · 最後更新：<span id="lm"></span></p>
+  <p class="verse">流淚撒種的，必歡呼收割。<small>— 詩篇 126:5</small></p>
+  <p class="footer-meta">
+    多媒體創作集 · <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">thc1006.craft.me/resume_2025</a>
+  </p>
+  <p class="footer-meta muted">
+    © <span id="y">2026</span> Hsiu-Chi Tsai · 頁面版本：<time id="pageVersion" datetime="2026-08-31">2026-08-31</time>
+  </p>
 </footer>
 
-<!-- JSON-LD 結構化資料（搜尋友善） -->
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
   "@type":"Person",
-  "name":"Tsai Hsiu-Chi",
+  "name":"Hsiu-Chi Tsai",
   "alternateName":"蔡秀吉",
   "email":"mailto:hctsai@linux.com",
-  "image":"https://0.gravatar.com/avatar/ff9f3a3473a849807a27f5c7679d115d30f6532b146c5115fcbcdf378a41e927?size=512&d=initials",
+  "url":"https://thc1006.us/",
+  "image":"https://thc1006.us/assets/og-thumb.jpg",
+  "jobTitle":"Research Assistant",
+  "description":"Researches correctness in cloud-native and distributed systems under resource limits, changing state, and failure. Works upstream on Kubernetes DRA, Kueue, and OpenTelemetry: resource-accounting and concurrency defects, regression tests, and merged fixes. CNCF Ambassador and Nephio (LFN) TSC member.",
+  "knowsAbout":["Kubernetes","Dynamic Resource Allocation","Cloud-native systems","Distributed systems","OpenTelemetry","Observability"],
+  "address":{"@type":"PostalAddress","addressCountry":"Taiwan"},
+  "affiliation":[
+    {"@type":"CollegeOrUniversity","name":"National Yang Ming Chiao Tung University"},
+    {"@type":"CollegeOrUniversity","name":"Charles University"},
+    {"@type":"CollegeOrUniversity","name":"National Tsing Hua University"}
+  ],
   "sameAs":[
     "https://orcid.org/0000-0001-7421-8027",
     "https://github.com/thc1006",
+    "https://www.linkedin.com/in/thc1006",
     "https://hackmd.io/@thc1006"
-  ],
-  "knowsAbout":["O-RAN","Nephio","GitOps","Kubernetes","LLM","Network Slicing","Reproducible Research"]
+  ]
 }
 </script>
 
-<script src="common.js"></script>
+<script defer src="/script.js?v=0a0ac1f2"></script>
 </body>
 </html>

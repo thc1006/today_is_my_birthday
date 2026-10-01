@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="auto">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,32 +8,79 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="Tsai Hsiu-Chi 蔡秀吉">
 <link rel="canonical" href="https://thc1006.us/PE/">
-<link rel="stylesheet" href="../style.css">
+<meta name="color-scheme" content="light dark">
+<script>
+(() => {
+  const stored = localStorage.getItem('theme');
+  const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.dataset.theme = stored || system;
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media=&#39;all&#39;">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/style.css?v=c31edcb8">
 
 <!-- Open Graph -->
 <meta property="og:title" content="肺栓塞 Pulmonary Embolism (PE) — 蔡秀吉醫學筆記">
 <meta property="og:description" content="肺栓塞 (PE) 診斷與治療完整筆記。涵蓋病因、病理生理、診斷策略、治療方式。">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://thc1006.us/PE/">
+<meta property="og:image" content="https://thc1006.us/assets/og-thumb.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@thc1006">
+<meta name="twitter:creator" content="@thc1006">
+<meta name="twitter:image" content="https://thc1006.us/assets/og-thumb.jpg">
 
 </head>
 
 <body>
 
-<header class="site-header">
-  <h1>肺栓塞 <small>Pulmonary Embolism (PE)</small></h1>
-  <p class="tagline">蔡秀吉醫學筆記翻譯整理</p>
-  <nav class="nav">
-    <a href="#intro">簡介</a> |
-    <a href="#etiology">病因與病理</a> |
-    <a href="#diagnosis">診斷</a> |
-    <a href="#treatment">治療</a> |
-    <a href="#other">其他原因</a> |
-    <a href="#cteph">慢性 CTEPH</a>
-  </nav>
+
+<a class="skip" href="#main">跳到主要內容</a>
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="/" aria-label="蔡秀吉 Hsiu-Chi Tsai，回到首頁">
+      <span class="brand-name">蔡秀吉</span>
+      <span class="brand-sub">Hsiu-Chi Tsai</span>
+    </a>
+    <nav class="topnav" aria-label="主導覽">
+      <a href="/#about" data-page="about">About</a>
+      <a href="/publications/" data-page="publications">Publications</a>
+      <a href="/honors/" data-page="honors">Honors</a>
+      <a href="/open-source/" data-page="open-source">Open Source</a>
+      <a href="/experience/" data-page="experience">Experience</a>
+      <a href="https://people.cs.nycu.edu.tw/~hctsai1006/blog/" data-page="blog">Writing</a>
+      <a href="/medical/" data-page="medical">Medical</a>
+      <a href="/contact/" data-page="contact">Contact</a>
+    </nav>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="切換主題" title="切換主題">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </div>
 </header>
 
-<main class="container">
+<main id="main" tabindex="-1">
+
+  <section class="page-hero">
+    <!-- 返回連結原本接在副標後面用「·」串著，窄螢幕會斷行，「←」孤零零留在第二行行首。
+         麵包屑的位置本來就在標題之上，而 kicker 已經標示所屬分類，兩者合併最自然。 -->
+    <p class="kicker"><a href="/medical/">← Medical Notes</a></p>
+    <h1>肺栓塞 <small>Pulmonary Embolism (PE)</small></h1>
+    <p class="page-sub">蔡秀吉醫學筆記翻譯整理</p>
+    <p class="page-sub page-toc"><a href="#intro">簡介</a> · <a href="#etiology">病因與病理</a> · <a href="#diagnosis">診斷</a> · <a href="#treatment">治療</a> · <a href="#other">其他原因</a> · <a href="#cteph">慢性 CTEPH</a> · <a href="#references">參考文獻</a></p>
+  </section>
+
+  <!-- 這一層只是版面容器，裡面才是真正的內容 section，所以用 div：
+       用 section 會多出一個沒有名稱的 region，把 7 個有標題的區塊包在裡面。 -->
+  <div class="section">
+  <div class="prose">
 
   <section id="intro">
     <h2>簡介</h2>
@@ -52,7 +99,7 @@
       最常見的栓塞來源是下肢深部靜脈血栓（Deep Vein Thrombosis, DVT），佔 80-90% 的病例，通常是髂股靜脈區域或骨盆靜脈叢。偶爾也可能來自上肢或右心。靜脈血栓可能被以下情況誘發：
     </p>
     <ul>
-      <li>骨科手術——髖關節或膝關節置換術</li>
+      <li>骨科手術（髖關節或膝關節置換術）</li>
       <li>腫瘤外科手術</li>
       <li>任何其他大型手術（相比前兩者風險較低）</li>
       <li>腫瘤</li>
@@ -94,14 +141,14 @@
       最重要的是測定 <strong>D-dimer</strong>。正常值幾乎可以排除肺栓塞診斷。相反地，陽性結果不一定代表有 PE。血液氣體分析會顯示低血氧和低二氧化碳。心臟損傷程度可用 <strong>BNP</strong>（右心衰竭）和 <strong>cardiac troponin</strong>（肺高壓導致的心肌損傷、兒茶酚胺釋放和休克狀態）來評估。
     </p>
 
-    <h3>心電圖 (EKG)</h3>
+    <h3>心電圖（EKG）</h3>
     <p>
       在鑑別診斷方面有意義，可與急性心肌梗塞等疾病區分。徵象不太特異，包括：
     </p>
     <ul>
       <li>右束支傳導阻滯（RBBB）</li>
       <li>右心負荷（V1-V3 的 T 波倒置，P pulmonale）</li>
-      <li>McGinn-White 徵象——S1Q3T3（第 1 導程有 S 波，第 3 導程有 Q 波和倒置 T 波）</li>
+      <li>McGinn-White 徵象，即 S1Q3T3（第 1 導程有 S 波，第 3 導程有 Q 波和倒置 T 波）</li>
     </ul>
 
     <h3>胸部 X 光</h3>
@@ -127,7 +174,7 @@
       這是通氣-灌流掃描（V/Q scan），使用標記的白蛋白顯示血流，使用標記的氣霧劑顯示通氣。PE 的證據是通氣和灌流不匹配，通氣相對過多。這個方法可以代替 CT 血管攝影，用於輻射暴露較低的年輕病人或孕婦，或是對比劑禁忌的病人（對比劑過敏、腎衰竭）。但診斷價值不如 CT。
     </p>
     <p>
-      其他檢查方法意義較小——傳統肺動脈攝影只在因懷疑急性冠心症而去心導管室的病人有意義。排除這個診斷後，可以顯示肺血管並發現血管充盈缺損或血流中斷。磁振造影（MRI）不適合診斷肺栓塞。
+      其他檢查方法意義較小：傳統肺動脈攝影只在因懷疑急性冠心症而去心導管室的病人有意義。排除這個診斷後，可以顯示肺血管並發現血管充盈缺損或血流中斷。磁振造影（MRI）不適合診斷肺栓塞。
     </p>
 
     <h3>診斷策略</h3>
@@ -153,7 +200,7 @@
     <p>
       管理最重要的部分是<strong>積極的抗血栓治療</strong>。持續的未分段肝素（unfractionated heparin）抗凝加上全身性血栓溶解（systemic thrombolysis）是治療的黃金標準。由於全身性血栓溶解的高出血風險（特別是顱內出血），發展出了替代性的導管治療方式：
     </p>
-    <ol style="list-style-type: lower-alpha;">
+    <ol class="alpha-list">
       <li>機械性：導管栓塞切除術（catheter embolectomy）、導管血栓碎裂術</li>
       <li>藥理性：經導管局部給予血栓溶解藥到肺血管（證實出血風險較低）</li>
       <li>藥理-機械血栓溶解（局部給藥加上超音波能量溶解血栓）</li>
@@ -162,7 +209,7 @@
       <strong>外科栓塞切除術</strong>由於手術風險，只有在血栓溶解失敗或有禁忌時才有意義。特定適應症是發現右心血栓，特別是「卡在」卵圓孔的（也有栓塞到體循環的風險）。手術從正中胸骨切開進行，常溫下，使用體外循環。
     </p>
     <p>
-      <strong>機械性循環輔助</strong>是另一種替代治療。透過周邊（股）血管放置機械心臟輔助裝置的導管，可以在肺血流阻塞時維持循環。作為橋接將病人送到手術室，或可單獨使用——保持輔助直到血栓溶解，能夠恢復自主循環。
+      <strong>機械性循環輔助</strong>是另一種替代治療。透過周邊（股）血管放置機械心臟輔助裝置的導管，可以在肺血流阻塞時維持循環。作為橋接將病人送到手術室，或可單獨使用，保持輔助直到血栓溶解，能夠恢復自主循環。
     </p>
     <p>
       <strong>支持性治療</strong>永遠都要做，包括機械通氣、給予適量液體、升壓藥、血管擴張劑（NO、levosimendan）、氧氣治療、止痛、校正酸鹼平衡。病人穩定後需要盡早開始口服抗凝藥 warfarin（在達到有效劑量前給予未分段肝素）。
@@ -203,7 +250,7 @@
       <strong>羊水栓塞（Amniotic Fluid Embolism）</strong>發生在困難分娩、死胎分娩、胎盤因創傷或手術破裂時。羊水進入子宮靜脈，在肺血管中引起細胞團塊和胎便的阻塞。阻塞當然會引發發炎反應。病人出現肺水腫和急性呼吸窘迫症候群（ARDS）。治療是症狀性的。
     </p>
     <p>
-      <strong>異物栓塞</strong>——最常見的是導管、套管、下腔靜脈濾器、血管內支架的碎片栓塞。理想的解決方案是導管移除。
+      <strong>異物栓塞</strong>：最常見的是導管、套管、下腔靜脈濾器、血管內支架的碎片栓塞。理想的解決方案是導管移除。
     </p>
     <p>
       <strong>腫瘤細胞栓塞</strong>最常見於侵犯靜脈系統的腎臟腫瘤，少見於前列腺、胃腸道、肝臟和乳房腫瘤。臨床表現模仿各種肺部疾病（肺炎、結核病、間質性疾病），在大栓塞時與靜脈血栓栓塞無法區分。治療主要在於腫瘤疾病的病因治療。
@@ -211,7 +258,7 @@
   </section>
 
   <section id="cteph">
-    <h2>慢性血栓栓塞性肺高壓 (CTEPH)</h2>
+    <h2>慢性血栓栓塞性肺高壓（CTEPH）</h2>
     <p>
       慢性血栓栓塞性肺高壓（Chronic Thromboembolic Pulmonary Hypertension, CTEPH）是一種特定的慢性疾病，被認為是肺栓塞的晚期併發症，或反覆肺栓塞的結果。在這裡提到它是因為心臟外科是主要的治療方法。
     </p>
@@ -234,16 +281,16 @@
       根據肺血管受影響的位置，我們區分 4 種受影響類型：
     </p>
     <ol>
-      <li>第 1 型——中央血栓</li>
-      <li>第 2 型——節段分支血栓</li>
-      <li>第 3 型——次節段分支血栓</li>
-      <li>第 4 型——周邊病變和在肺動脈高壓時原位形成的血栓</li>
+      <li>第 1 型：中央血栓</li>
+      <li>第 2 型：節段分支血栓</li>
+      <li>第 3 型：次節段分支血栓</li>
+      <li>第 4 型：周邊病變和在肺動脈高壓時原位形成的血栓</li>
     </ol>
     <p>
       手術對肺動脈主幹和大分支的病變（分類第 1-2 型）帶來最大益處。第 3 型在適應症上是臨界的，益處較小甚至不確定，但技術上手術還可行。只有遠端分支受影響（第 4 型）時，適應症有爭議，病人無法從手術中獲益。肺動脈內膜剝除術的結果總體上非常令人滿意，手術死亡率低於 5%，有些中心甚至低於 2%，長期結果良好。
     </p>
     <p>
-      內膜剝除術的現代替代方案可能是導管治療——<strong>氣球肺動脈成形術（Balloon Pulmonary Angioplasty）</strong>，特別是對無法手術的病人。但其益處目前未達到外科治療的水平，且需要重複「療程」。
+      內膜剝除術的現代替代方案可能是導管治療，也就是<strong>氣球肺動脈成形術（Balloon Pulmonary Angioplasty）</strong>，特別是對無法手術的病人。但其益處目前未達到外科治療的水平，且需要重複「療程」。
     </p>
   </section>
 
@@ -260,13 +307,17 @@
     </ol>
   </section>
 
+  </div>
+  </div>
+
 </main>
 
 <footer class="site-footer">
-  <p><a href="../">← 返回首頁</a></p>
-  <p>© <span id="y"></span> Tsai Hsiu-Chi</p>
+  <p class="verse">流淚撒種的，必歡呼收割。<small>— 詩篇 126:5</small></p>
+  <p class="footer-meta">多媒體創作集 · <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">thc1006.craft.me/resume_2025</a></p>
+  <p class="footer-meta muted">© <span id="y">2026</span> Hsiu-Chi Tsai · 頁面版本：<time id="pageVersion" datetime="2026-08-31">2026-08-31</time></p>
 </footer>
 
-<script src="../common.js"></script>
+<script defer src="/script.js?v=0a0ac1f2"></script>
 </body>
 </html>
