@@ -28,7 +28,7 @@ else
   source_dir=$(mktemp -d)
   trap 'rm -rf "$source_dir"' EXIT
   git archive HEAD | tar -x -C "$source_dir"
-  podman build -t "$image" --label "org.opencontainers.image.revision=$revision" "$source_dir"
+  podman build -t "$image" --build-arg "REVISION=$revision" "$source_dir"
   podman save "$image" | sudo k3s ctr -n k8s.io images import -
 fi
 

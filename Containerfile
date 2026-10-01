@@ -56,5 +56,11 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD wget -q -T 3 -O /dev/null http://localhost:8080/ || exit 1
 
+# Record the commit this image was built from (scripts/deploy.sh passes it in).
+# A build argument changes the cache key, so the label is written even when every
+# earlier step is cached; podman 3.4 skips `--label` in that case.
+ARG REVISION=unknown
+LABEL org.opencontainers.image.revision=$REVISION
+
 # Run the server
 CMD ["/app/thc1006-web"]
