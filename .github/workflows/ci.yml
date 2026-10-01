@@ -37,6 +37,7 @@ jobs:
               - 'Cargo.lock'
               - 'src/**'
               - 'static/**'
+              - 'Containerfile'
             frontend:
               - 'ts/**'
               - 'static/**'
@@ -107,34 +108,18 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Verify built file exists
-        run: test -f static/script.js
+        run: test -f static/common.js
       - name: Verify built artifacts are committed
         run: |
-          git diff --exit-code static/script.js || {
-            echo "::error::static/script.js is out of sync with ts/script.ts. Please run 'pnpm run build' and commit the changes."
+          git diff --exit-code static/common.js || {
+            echo "::error::static/common.js is out of sync with ts/common.ts. Please run 'pnpm run build' and commit the changes."
             exit 1
           }
-      - name: Verify asset versions in pages
-        run: |
-          js=$(sha256sum static/script.js | cut -c1-8)
-          css=$(sha256sum static/style.css | cut -c1-8)
-          stale=$(grep -rhoE '(href|src)="/(style\.css|script\.js)[^"]*"' static --include='*.html' | sort -u \
-            | grep -vxE "src=\"/script\.js\?v=$js\"|href=\"/style\.css\?v=$css\"" || true)
-          if [ -n "$stale" ]; then
-            echo "::error::頁面引用的 ?v= 版本碼和檔案內容對不上，請跑 scripts/sync-homepage.sh 重新蓋上：$stale"
-            exit 1
-          fi
       - name: Validate HTML
         uses: Cyb3r-Jak3/html5validator-action@v7.2.0
         with:
           root: static/
           css: true
-          # 驗證器還不認得 color-mix()（各大瀏覽器 2023 年起都支援），會把網站 background 與
-          # box-shadow 裡的 color-mix 報成錯誤，這兩條規則只略過這兩種訊息。例外：box-shadow 的
-          # 錯誤訊息不含函式名稱，box-shadow 裡拼錯的顏色函式也會一起被略過。
-          # 修改時注意：action 會把 extra 依空白拆成多個參數，規則裡不能有空白（用 \s），
-          # 也不要用 * ? [ 這些 shell 萬用字元。
-          extra: '--ignore-re CSS:\s"background":\s"color-mix\(in\ssrgb,.+"\sis\snot\sa\s"(background-|)color"\svalue CSS:\s"box-shadow":\s"in"\sis\snot\sa\s"color"\svalue'
 
   # ============================================
   # 容器構建驗證

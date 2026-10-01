@@ -30,7 +30,7 @@ spec:
         - name: web
           # NOTE: localhost image works for single-node k3s. For multi-node clusters,
           # push to a registry and change imagePullPolicy to IfNotPresent/Always.
-          image: localhost/thc1006-web:1.0.6
+          image: localhost/thc1006-web:1.0.7
           imagePullPolicy: Never
           ports:
             - containerPort: 8080
