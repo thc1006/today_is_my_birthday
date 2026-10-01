@@ -1,5 +1,2 @@
-# scripts/ 裡的 patch 要逐位元套用，shell 腳本與 lock 檔會被 bash 和 sed 讀；
-# 被 core.autocrlf 轉成 CRLF 時，patch 會套不上，讀出來的值也會多一個 \r。
-*.patch                        text eol=lf
-*.sh                           text eol=lf
-scripts/homepage-upstream.lock text eol=lf
+# shell 腳本在 Windows 上被 core.autocrlf 轉成 CRLF 時，bash 會讀到多餘的 \r。
+*.sh text eol=lf
