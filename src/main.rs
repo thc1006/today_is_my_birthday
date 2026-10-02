@@ -78,6 +78,33 @@ async fn serve_current_files(mut request: Request<Body>, next: Next) -> Response
     response
 }
 
+/// Send visitors of www.thc1006.us to https://thc1006.us, keeping the path and query.
+async fn canonical_host(request: Request<Body>, next: Next) -> Response<Body> {
+    let host = request
+        .headers()
+        .get(header::HOST)
+        .and_then(|value| value.to_str().ok())
+        .or_else(|| request.uri().host());
+    let path_and_query = request
+        .uri()
+        .path_and_query()
+        .map_or("/", |value| value.as_str());
+    match www_redirect_target(host, path_and_query) {
+        Some(target) => {
+            (StatusCode::MOVED_PERMANENTLY, [(header::LOCATION, target)]).into_response()
+        }
+        None => next.run(request).await,
+    }
+}
+
+/// The address to redirect to when the request came in for the www host. The target host is
+/// fixed, so the redirect can only ever point at this site.
+fn www_redirect_target(host: Option<&str>, path_and_query: &str) -> Option<String> {
+    let name = host?.split(':').next()?;
+    name.eq_ignore_ascii_case("www.thc1006.us")
+        .then(|| format!("https://thc1006.us{path_and_query}"))
+}
+
 fn page(rendered: askama::Result<String>, status: StatusCode) -> Response<Body> {
     match rendered {
         Ok(html) => (status, Html(html)).into_response(),
@@ -147,6 +174,7 @@ async fn main() {
         .fallback_service(static_files)
         .layer(CompressionLayer::new())
         .layer(middleware::from_fn(serve_current_files))
+        .layer(middleware::from_fn(canonical_host))
         .layer(middleware::from_fn(security_headers));
 
     // Server address
@@ -156,4 +184,28 @@ async fn main() {
     // Start server
     let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
     axum::serve(listener, app).await.unwrap();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::www_redirect_target;
+
+    #[test]
+    fn www_goes_to_the_canonical_host() {
+        assert_eq!(
+            www_redirect_target(Some("www.thc1006.us"), "/PE/?q=1").as_deref(),
+            Some("https://thc1006.us/PE/?q=1")
+        );
+        assert_eq!(
+            www_redirect_target(Some("WWW.thc1006.us:443"), "/").as_deref(),
+            Some("https://thc1006.us/")
+        );
+    }
+
+    #[test]
+    fn other_hosts_are_served_normally() {
+        assert_eq!(www_redirect_target(Some("thc1006.us"), "/"), None);
+        assert_eq!(www_redirect_target(Some("evil.example"), "/"), None);
+        assert_eq!(www_redirect_target(None, "/"), None);
+    }
 }

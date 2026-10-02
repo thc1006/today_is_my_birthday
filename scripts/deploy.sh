@@ -34,6 +34,7 @@ else
   podman save "$image" | sudo k3s ctr -n k8s.io images import -
 fi
 
-kubectl apply -f k8s/deployment.yaml
+# 套用整個 k8s/，ingress 這類變更也跟 main 保持一致。
+kubectl apply -f k8s/
 kubectl -n thc1006-web rollout status deploy/thc1006-web --timeout=180s
 echo "✓ 線上是 $image，對應 main 的 ${revision:0:7}"
