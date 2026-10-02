@@ -45,6 +45,17 @@ spec:
                 name: thc1006-web
                 port:
                   name: http
+    # www 也送到同一個服務，由伺服器 301 轉到 https://thc1006.us
+    - host: www.thc1006.us
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: thc1006-web
+                port:
+                  name: http
 
   # Uncomment below for end-to-end TLS (requires cert-manager):
   # tls:
