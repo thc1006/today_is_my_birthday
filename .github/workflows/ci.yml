@@ -24,7 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       rust: ${{ steps.filter.outputs.rust }}
-      frontend: ${{ steps.filter.outputs.frontend }}
       k8s: ${{ steps.filter.outputs.k8s }}
     steps:
       - uses: actions/checkout@v4
@@ -36,20 +35,15 @@ jobs:
               - 'Cargo.toml'
               - 'Cargo.lock'
               - 'src/**'
+              - 'templates/**'
+              - 'content/**'
               - 'static/**'
               - 'Containerfile'
-            frontend:
-              - 'ts/**'
-              - 'static/**'
-              - 'package.json'
-              - 'pnpm-lock.yaml'
-              - 'tsconfig.json'
-              - 'eslint.config.ts'
             k8s:
               - 'k8s/**'
 
   # ============================================
-  # Rust 檢查（合併以減少工具鏈設置開銷）
+  # Rust 檢查與頁面驗證（頁面由 Rust 產生，輸出之後再驗 HTML）
   # ============================================
   rust:
     name: Rust Check
@@ -73,6 +67,15 @@ jobs:
         run: cargo test --all-features
       - name: Build
         run: cargo build --release --locked
+      - name: Render pages
+        run: |
+          cargo run --release --locked -- render site
+          cp -r static/. site/
+      - name: Validate HTML
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
+        with:
+          root: site/
+          css: true
 
   rust-audit:
     name: Security Audit
@@ -86,42 +89,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   # ============================================
-  # TypeScript + HTML 驗證（合併以減少 Node.js 設置開銷）
-  # ============================================
-  frontend:
-    name: Frontend Check
-    runs-on: ubuntu-latest
-    needs: changes
-    if: needs.changes.outputs.frontend == 'true' || github.event_name == 'push'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - name: Type Check
-        run: pnpm run typecheck
-      - name: Lint
-        run: pnpm run lint
-      - name: Build
-        run: pnpm run build
-      - name: Verify built file exists
-        run: test -f static/common.js
-      - name: Verify built artifacts are committed
-        run: |
-          git diff --exit-code static/common.js || {
-            echo "::error::static/common.js is out of sync with ts/common.ts. Please run 'pnpm run build' and commit the changes."
-            exit 1
-          }
-      - name: Validate HTML
-        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
-        with:
-          root: static/
-          css: true
-
-  # ============================================
   # 容器構建驗證
   # NOTE: CI uses Docker for convenience in GitHub Actions environment.
   # Production deployment uses Podman + k3s (no Docker daemon required).
@@ -129,12 +96,11 @@ jobs:
   container-build:
     name: Container Build
     runs-on: ubuntu-latest
-    needs: [changes, rust, frontend]
+    needs: [changes, rust]
     if: |
       always() &&
       (needs.rust.result == 'success' || needs.rust.result == 'skipped') &&
-      (needs.frontend.result == 'success' || needs.frontend.result == 'skipped') &&
-      (needs.changes.outputs.rust == 'true' || needs.changes.outputs.frontend == 'true' || github.event_name == 'push')
+      (needs.changes.outputs.rust == 'true' || github.event_name == 'push')
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
@@ -153,6 +119,8 @@ jobs:
           docker run -d --name test-container -p 8080:8080 thc1006-web:ci
           sleep 3
           curl -f http://localhost:8080/ || exit 1
+          curl -f http://localhost:8080/PE/ || exit 1
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/no-such-page)" = 404
           docker stop test-container
 
   # ============================================

@@ -1,0 +1,170 @@
+# 首頁的內容。版面在 templates/index.html，這裡只放資料。
+#
+# 文字會原樣放進頁面，可以直接寫 <a>、<strong>；要顯示 < 或 & 本身時寫成 &lt; 與 &amp;。
+# 段落寫成多行陣列，每一行對應頁面上的一行。
+# 改完跑 cargo test，它會把頁面實際組一次，格式錯了會在這一步失敗。
+
+[page]
+title = "蔡秀吉 Tsai Hsiu-Chi — 學術與專案首頁"
+description = "蔡秀吉 Tsai Hsiu-Chi｜研究雲原生與分散式系統如何在資源受限、狀態變動與故障下維持正確。CNCF Ambassador、Nephio (LFN) TSC Member、NYCU CS WinLab 研究助理。"
+keywords = "蔡秀吉,Tsai Hsiu-Chi,Kubernetes,DRA,CNCF,O-RAN,Nephio,AI RAN,醫學,ECMO,陽明交通大學"
+og_description = "雲原生與分散式系統｜Kubernetes DRA｜雲原生電信｜CNCF Ambassador｜Nephio (LFN) TSC Member"
+tagline = "讀醫讀電資又讀戲劇，技能樹亂點的人生。"
+
+[about]
+intro = [
+  "我研究<strong>雲原生與分散式系統</strong>，如何在資源受限、狀態變動與故障下維持正確。",
+  "目前聚焦 <strong>Kubernetes DRA、雲原生電信和其他 CNCF 專案</strong>：追查資源會計、生命週期與並行錯誤，建立回歸測試，把修正送回上游。",
+]
+keyfacts = [
+  "現任：CNCF Ambassador · Nephio (LFN) TSC Member · Kubernetes v1.38 Release Team（Signal Shadow）· Zephyr RTOS M5Stack Platforms Maintainer · NYCU CS WinLab 研究助理",
+  "關鍵詞：Kubernetes DRA、Cloud-native、O-RAN、Nephio、AI RAN、NTN、OpenTelemetry、Reproducible Research",
+  '完整履歷：<a href="https://hackmd.io/@thc1006/rkhYssej5" target="_blank" rel="noopener">學術經歷及文章著作</a> | <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">多媒體創作集</a>',
+]
+background = [
+  "吾人出身討海漁家，家境弱勢，就學間半工半讀，以敷闔家之溫飽。個性誠厚直率，不擅交際，唯一日工作十四、十五小時，身體亦足堪擔負，現漂泊北棲，嗜學如命，無菸酒不良嗜好。",
+]
+exchange = [
+  '<strong>海外交換：</strong><a href="https://hackmd.io/@tchajwan/tchaj-wan-student-survival-guide" target="_blank" rel="noopener">捷克交換學生生存手冊</a> (CC BY-NC 4.0)',
+]
+education = [
+  "國立陽明交通大學 百川學士學位學程（人工智慧生醫組），2021/10 起",
+  "捷克查理大學 Hradec Králové 醫學院，2023/09 起",
+  "國立政治大學 斯拉夫語文學系（捷克語學程），2022/07 起",
+  "國立清華大學 電機資訊學院學士班，2022/12 — 2024/02",
+  "海外研究與訓練：捷克理工大學 6Gmobile Research Lab 訪問研究（聯邦學習，2023/09 — 2024/07）、德國 Universitätsklinikum des Saarlandes 重症醫學訓練（2024、2025）",
+  "交換與進修：上海交通大學 Virtual Exchange（2024）、漢陽大學（2024）、韓國浦項工科大學 POSTECH APRU 交換（2022）",
+]
+honors = [
+  "國科會大專學生研究創作獎（2026，114 年度）",
+  "臺灣太空事務青年人才選訓計畫 入選（2026，第五屆）",
+  "Make NTU 2026 強茂企業獎 第一名",
+  "IEEE Region 10 ACEI Entrepreneurship Ambassador（2025）",
+  "梅竹黑客松 第一名（2025，GuardNet 智慧失智症監測系統）",
+]
+
+[research]
+publications_more = '完整列表：<a href="https://orcid.org/0000-0001-7421-8027" target="_blank" rel="noopener">ORCID</a>'
+
+# url 留空的論文只顯示標題，不加連結。
+[[research.publications]]
+year = "2026"
+title = "Ground-Side Mission Plan Compilation with Policy-as-Code Guardrails for Cloud-Native Satellite Platforms"
+url = "https://arxiv.org/abs/2607.14798"
+venue = "IEEE SCC 2026，已接受"
+
+[[research.publications]]
+year = "2026"
+title = "OOBWatch-S3: Surfacing a Zephyr Wi-Fi Cold-Boot Race Family on ESP32-S3 via a Public-Safety Watchdog Deployment"
+url = ""
+venue = "IEEE WF-PST 2026，已接受"
+
+[[research.publications]]
+year = "2026"
+title = "No Capacity Resurrection: Committed-effect Continuity for Kubernetes Dynamic Resource Allocation"
+url = "https://doi.org/10.2139/ssrn.7448003"
+venue = "SSRN 預印本"
+
+[[research.projects]]
+title = "Intent-based O-RAN / Nephio"
+description = "文字意圖 → KRM → O-RAN/O-Cloud 自動化部署與驗證。"
+links = [{ label = "GitHub", url = "https://github.com/thc1006/nephio-intent-to-o2-demo" }]
+
+[[research.projects]]
+title = "Exoplanet Hunters"
+description = "NASA 開放資料系外行星偵測：BLS/TLS + ML 分類。"
+links = [{ label = "GitHub", url = "https://github.com/exoplanet-spaceapps" }]
+
+[[research.projects]]
+title = "ECMO 臨床決策支援"
+description = "醫療資料與 AI 臨床決策支援系統。"
+links = [{ label = "GitHub", url = "https://github.com/thc1006/TAIWAN-ECMO-CDSS-NEXT" }]
+
+[[research.projects]]
+title = "上游開源貢獻"
+description = "350+ 個 merged PR，涵蓋 Kubernetes、OpenTelemetry、Kueue、Nephio 等 CNCF 與 Linux Foundation 專案。"
+links = [{ label = "貢獻清單", url = "https://people.cs.nycu.edu.tw/~hctsai1006/open-source/" }]
+
+[[research.projects]]
+title = "更多專案"
+description = "O-RAN MANO、聯邦學習、Whisper TPU、108 課綱平台等。"
+links = [{ label = "完整列表", url = "https://github.com/thc1006" }]
+
+[medicine]
+intro = "臨床筆記、藥理學與重症醫學學習紀錄。"
+
+# note 有寫的會接在連結後面；網址不是 http 開頭的（站內頁面）不另開分頁。
+[[medicine.notes]]
+title = "肺栓塞 PE"
+url = "PE/"
+note = "Pulmonary Embolism 診斷與治療"
+
+[[medicine.notes]]
+title = "VA ECMO"
+url = "https://hackmd.io/@thc1006/Bk9QhUEMgl"
+note = "體外動脈靜脈循環"
+
+[[medicine.notes]]
+title = "呼吸器相關肺炎 VAP"
+url = "https://hackmd.io/@thc1006/H1tEQS-fR"
+
+[[medicine.notes]]
+title = "OHCA 患者 VAP 治療"
+url = "https://hackmd.io/@thc1006/rkVB4CFwkg"
+
+[[medicine.notes]]
+title = "DM 患者 sVT 案例"
+url = "https://hackmd.io/@thc1006/SJ5F0x9JA"
+
+[[medicine.notes]]
+title = "重症醫學考題集"
+url = "https://hackmd.io/@thc1006/S1KD4fWwR"
+
+[[medicine.notes]]
+title = "抗憂鬱劑 Antidepressants"
+url = "https://hackmd.io/@thc1006/By37T5BzR"
+
+[[medicine.notes]]
+title = "鎮定安眠藥物 Psychotropics"
+url = "https://hackmd.io/@thc1006/H184R3GfA"
+
+[[medicine.notes]]
+title = "PGY 學習資源彙整"
+url = "https://hackmd.io/@thc1006/Skl_SATPyg"
+
+[community]
+student = [
+  "在陽明交通大學學生自治體系中兼具行政與立法經驗，完成「移除英文畢業門檻」與「心理調適假」制度化變更，推動「校自主學士學位」通過（114 學年度實施）。",
+  "擔任第六屆會長選舉典選委員會「委員長」，榮獲<strong>總統教育獎 - 奮發向上獎（2023）</strong>。",
+  "2024/10 — 2026/09 擔任陽明交大學生會秘書長，現任秘書，主責雲端與資訊系統；也擔任過交大學生議會一般不分區學生議員（2024 秋 — 2026/04）與交大分會副會長。",
+]
+student_link = { label = "完整履歷", url = "https://hackmd.io/@thc1006/BkISLKV5eg" }
+tech = [
+  "GDSC NYCU 2022-2023 年度 Lead，舉辦 15 場技術活動（Kubernetes、Firebase、Flutter 等），",
+  "430 人次報名、出席率 86.3%，舉辦 Google I/O Extended 2023 Hsinchu。之後在捷克理工大學擔任 GDG on Campus Lead。",
+]
+tech_link = { label = "完整年鑑", url = "https://hackmd.io/zVGjlY4uTuORX1mCWcYLcw" }
+
+[teaching]
+items = [
+  '下世代無線通訊技術及資訊安全 — <a href="https://youtu.be/m4126uQk0T8" target="_blank" rel="noopener">YouTube</a>',
+  'AI/ML O-RAN Cloud-Native Automation 系列講解 — <a href="https://youtube.com/playlist?list=PLMmZLmhgqGQehzE6GKDhvuXh5ngAXJUG6&si=mqOuJjAXFSF1t-X9" target="_blank" rel="noopener">播放清單</a>',
+  "如何為開源做貢獻？（投影片即將公開）",
+  '創新生成式 AI 應用 — <a href="https://hackmd.io/@thc1006/SyC7RZVdC" target="_blank" rel="noopener">HackMD</a>',
+  '媒體內容用於大型語言模型訓練 — <a href="https://github.com/thc1006/sociotechnical-harms" target="_blank" rel="noopener">GitHub</a>',
+  'COSCUP 2026「體驗火箭導控 Balloon Popping Challenge」工作坊（與 William Mou 共同帶領）— <a href="https://pretalx.coscup.org/coscup-2026/talk/TBDXKG/" target="_blank" rel="noopener">議程</a> | <a href="https://github.com/ARRC-Rocket/BalloonPoppingChallenge" target="_blank" rel="noopener">訓練環境</a> | <a href="https://github.com/ARRC-Rocket/ActiveRocketPy" target="_blank" rel="noopener">火箭模擬</a>',
+  'COSCUP 2025「電信新世界」— <a href="https://github.com/thc1006/coscup-2025-telecom-new-world" target="_blank" rel="noopener">GitHub</a>',
+]
+
+[contact]
+lines = [
+  'Email：<a href="mailto:hctsai@linux.com">hctsai@linux.com</a>',
+  'ORCID：<a href="https://orcid.org/0000-0001-7421-8027" target="_blank" rel="me noopener">0000-0001-7421-8027</a>',
+  'GitHub：<a href="https://github.com/thc1006" target="_blank" rel="me noopener">thc1006</a> | LinkedIn：<a href="https://www.linkedin.com/in/thc1006" target="_blank" rel="me noopener">in/thc1006</a> | HackMD：<a href="https://hackmd.io/@thc1006" target="_blank" rel="me noopener">@thc1006</a>',
+]
+
+[footer]
+lines = [
+  "流淚撒種的、必歡呼收割。詩篇 126:5",
+  '多媒體創作集 — <a href="https://thc1006.craft.me/resume_2025" target="_blank" rel="noopener">https://thc1006.craft.me/resume_2025</a>',
+]

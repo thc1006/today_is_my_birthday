@@ -5,7 +5,7 @@
   <meta name="viewport" content="initial-scale=1, minimum-scale=1, width=device-width">
   <title>404 - 你迷路了嗎？</title>
   <meta name="robots" content="noindex">
-  <script src="common.js"></script>
+{% include "ga.html" %}
   <style>
     * {
       margin: 0;
@@ -160,14 +160,14 @@
   <h1>404</h1>
   <h2>恭喜你發現了一個不存在的頁面</h2>
 
-  <img id="gif1" class="gif-left" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+  <img id="gif1" class="gif-left" alt="" src="{{ gifs[0] }}">
 
   <div class="section">
-    <div class="section-title">你要找的 <code id="url"></code> 可能：</div>
+    <div class="section-title">你要找的 <code id="url">{{ path }}</code> 可能：</div>
     <p style="line-height: 1.6;">還在我的待辦清單裡、正在 ECMO 上搶救中、被發射到外太空找系外行星了、或是在半工半讀的某個深夜被遺忘了。</p>
   </div>
 
-  <img id="gif2" class="gif-right" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+  <img id="gif2" class="gif-right" alt="" src="{{ gifs[1] }}">
 
   <div class="quote">
     「讀醫讀電資又讀戲劇，技能樹亂點的人生。」<br>
@@ -176,52 +176,14 @@
 
   <div class="section">
     <div class="section-title">隨機冷知識</div>
-    <p id="fact" style="line-height: 1.6;"></p>
+    <p id="fact" style="line-height: 1.6;">{{ fact }}</p>
   </div>
 
-  <img id="gif3" class="gif-center" alt="" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+  <img id="gif3" class="gif-center" alt="" src="{{ gifs[2] }}">
 
   <div class="footer">
     不如回到 <a href="https://thc1006.us/">首頁</a> 看看有什麼有趣的？
   </div>
 
-  <script>
-    document.getElementById('url').textContent = window.location.pathname;
-
-    const facts = [
-      '你知道嗎？肺栓塞是僅次於心臟病和癌症的第三大死因。',
-      '有趣的事實：ECMO 可以部分或完全取代心肺功能，給器官恢復的時間。',
-      '冷知識：O-RAN 是開放無線接取網路的縮寫，正在改變電信產業。',
-      '學術八卦：寫程式寫到半夜突然發現 bug 的感覺，跟發現病人心律不整一樣刺激。',
-      '生活智慧：一天工作十四、十五小時的人，最需要的是咖啡和除錯。',
-      '醫學常識：BZD 類藥物不能突然停藥，程式也不能突然停止維護。',
-      '哲學思考：404 錯誤提醒我們，不是所有東西都能被找到，有些路本來就不存在。',
-      '實用建議：看到 404 不要慌，深呼吸，回首頁，人生就是這樣。',
-      '冷知識：你知道嗎，其實斯拉夫人不是全部都是夫人，他們也有男生。',
-      '冷知識：秀吉會說客語和捷克語，就跟你會說美語，也許去學阿美語也會很快。',
-      '寫程式就像是蓋教堂完成後我們就開始祈禱。',
-      '土撥鼠其實是鼠撥土。',
-      '我覺得根本不用去什麼女僕咖啡廳，每次我帶貓咪去獸醫診所，他們都會叫我主人。',
-      '阿華田是一種即溶咖啡，咖啡其實是一種豆漿。',
-      '壽司就是沒包好的飯糰。',
-      '兩情若是長久時，又豈在界門綱目。',
-      '喜歡一個人不能只看外表，因為也要看看自己的外表。',
-      '眾所周知，周朝為什麼比夏朝晚幾百年，因為有中間商呀。',
-      '遠距離的戀愛信任對方很重要，不要突然跑到對方附近，這樣對四個人都好。'
-    ];
-    document.getElementById('fact').textContent = facts[Math.floor(Math.random() * facts.length)];
-
-    const gifs = [
-      'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeno5Z3hzdGQxeXQ1N3J6c2h4ZThqYzRrenVpeng1N2VlazdrY2k5ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3q2zVr6cu95nF6O4/giphy.gif',
-      'https://media1.tenor.com/m/WAFH6TX2VIYAAAAC/polish-cow.gif',
-      'https://media1.tenor.com/m/OjZdgUxdGAgAAAAC/%E9%9D%99%E8%8A%B3-%E8%80%81%E5%A9%86.gif'
-    ];
-
-    // 隨機分配三個 GIF 到三個位置
-    const shuffled = gifs.sort(() => Math.random() - 0.5);
-    document.getElementById('gif1').src = shuffled[0];
-    document.getElementById('gif2').src = shuffled[1];
-    document.getElementById('gif3').src = shuffled[2];
-  </script>
 </body>
 </html>
