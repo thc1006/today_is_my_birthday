@@ -3,7 +3,7 @@ name = "thc1006-web"
 version = "1.0.0"
 edition = "2024"
 rust-version = "1.85"
-authors = ["Tsai Hsiu-Chi <hctsai@linux.com>"]
+authors = ["Hsiu-Chi Tsai <hctsai@linux.com>"]
 description = "Server for thc1006.us; pages are rendered from templates and a data file"
 
 [dependencies]
