@@ -36,7 +36,10 @@ pub struct PageMeta {
 pub struct About {
     pub intro: Vec<String>,
     pub keyfacts: Vec<String>,
+    pub roles: Vec<String>,
     pub background: Vec<String>,
+    /// Paragraphs shown after the background, one `<p>` each.
+    pub story: Vec<String>,
     pub exchange: Vec<String>,
     pub education: Vec<String>,
     pub honors: Vec<String>,
@@ -255,11 +258,14 @@ mod tests {
     #[test]
     fn every_page_renders() {
         load();
-        assert!(
-            home()
-                .unwrap()
-                .contains("<title>蔡秀吉 Tsai Hsiu-Chi — 學術與專案首頁</title>")
-        );
+        let home = home().unwrap();
+        assert!(home.contains("<title>蔡秀吉 Hsiu-Chi Tsai — 學術與專案首頁</title>"));
+        for paragraph in &HOME.about.story {
+            assert!(home.contains(&format!("<p>{paragraph}</p>")));
+        }
+        for role in &HOME.about.roles {
+            assert!(home.contains(&format!("<li>{role}</li>")));
+        }
         assert!(pe().unwrap().contains("肺栓塞 Pulmonary Embolism (PE)"));
         assert!(
             not_found("/missing")
